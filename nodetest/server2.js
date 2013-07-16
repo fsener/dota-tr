@@ -11,19 +11,19 @@ var main_room = 'Lobi';
 
 io.sockets.on('connection', function(socket){
   socket.on('adduser', function(username){
-    
-    socket.username = username;
-    usernames[username] = username;
-    
-    socket.room = main_room;
-    socket.join(main_room);
+    if (clients[user.username] === undefined) {
+      socket.username = username;
+      usernames[username] = username;
+      
+      socket.room = main_room;
+      socket.join(main_room);
 
-    socket.emit('updatechat', main_room, 'Sunucu', 'Dota-tr lig lobisine hoşgeldin, ' + username + '.');
-    socket.broadcast.to(main_room).emit('updatechat', main_room, 'Sunucu', username + ' lig lobisine katıldı.');
+      socket.emit('updatechat', main_room, 'Sunucu', 'Dota-tr lig lobisine hoşgeldin, ' + username + '.');
+      socket.broadcast.to(main_room).emit('updatechat', main_room, 'Sunucu', username + ' lig lobisine katıldı.');
 
-    socket.emit('gamelist', getGames() );
-    io.sockets.emit('userlist', getUsers(main_room) );
-
+      socket.emit('gamelist', getGames() );
+      io.sockets.emit('userlist', getUsers(main_room) );
+    }
   });
 
   socket.on('subscribe', function(data){
