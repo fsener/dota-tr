@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+{% block page_title %} Test Sayfası {% endblock page_title %}
+
+{% block extra_head %}
+<style>
+    .no-space{/*border:1px solid #000;margin-left:0 !important;*/}
+    #userList{
+        height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #chatPanel{
+        height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    #game-chatPanel {
+        height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px solid #eaeaea;
+        background-color: #f5f5f5;
+    }
+    #game-userList{
+        height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px solid #eaeaea;
+        background-color: #f5f5f5;
+    }
+ /*   li {
+        list-style-type: none;
+    }
+
+    li:hover{
+        background: #E3D3D3;
+    }*/
+
+#dropZone {
+    border: 1px solid #eaeaea;
+    background-color: #ffffcc;
+}
+.player { 
+    padding: 5px 10px;
+    margin:5px;
+    border:1px solid #ccc;
+    background-color: #eaeaea;
+}
+.stack {
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    margin: 20px;
+}
+.stackHdr {
+    background-color: #eaeaea;
+    border: 1px solid #fff;
+    padding: 5px 
+}
+.radiant_box, .dire_box {
+    min-height:100px;
+    padding: 15px;
+}
+
+
+/*    #sortableUsers, #radiant_box, #dire_box {
+        margin:0px;
+        float: left;
+        margin-right: 10px;
+        width: 120px;
+        border: solid;
+        height: 150px;
+    }*/
+    /*#sortable1, #sortable2 { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }*/
+    /* #sortable1 li, #sortable2 li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }*/
+</style>
+<script src="{{ async_url  }}/socket.io/socket.io.js"></script>
+
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+<script>
+    $(document).ready(function(){
+        var iosocket = io.connect('{{ async_url  }}');
+        var currentRoom = null
+        var radiant_team = [];
+        var dire_team = [];
+
+        iosocket.on('connect', function(){
+            iosocket.emit('adduser', '{{ request.user.username }}');
+        });
+        iosocket.on('userlist', function(users){
+            updateUserList(users);
+        });
+        iosocket.on('game_userlist', function(data){
+            updateGameUserList(data);
+        });
+        iosocket.on('updatechat', function(room, user, message){
+            updateChat(room, user, message);
+        });
+        iosocket.on('gamelist', function(games){
+            updateGameList(games);
+        });
+        iosocket.on('user_dc_from_game', function(data){
+            if(data.room == currentRoom) {
+                $('#game-chatPanel').prepend(data.username+" oyundan ayrıldı.<br>");
+                $('#player-'+data.username).remove();                
+            }
+
+        });
+
+        iosocket.on('update_player_positions', function(data){
+            $('.radiant_box').empty();
+            $.each(data.radiant_team, function(key, value){
+                $('.radiant_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+            })
+            $('.dire_box').empty();
+            $.each(data.dire_team, function(key, value){
+                $('.dire_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+            })
+            
+        })
+
+        function updateChat(room,user,message){
+            if(room=='Lobi') {
+                panel = $('#chatPanel') 
+            } else {
+                panel = $('#game-chatPanel')
+            }
+            html = "<small>["+ getTime() +"]</small>";
+            if(user=='Sunucu'){
+                html += " "+user+ " : ";
+            } else {
+                html += "<span class='label label-inverse'> " + user + " </span> : "
+            }
+            html += message + "<br/>"
+            panel.prepend(html);
+        }
+
+        function updateUserList(users){
+            $('#userList').empty();
+            $.each(users, function(key, value) {
+                $('#userList').append("<li class='user-tooltip' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</li>");
+            });                
+        }
+
+        function updateGameUserList(data){
+            $('#game-userList').empty();
+            $.each(data.users, function(key, value) {
+                if($('#player-'+value).length > 0) {
+                    //
+                } else {
+                $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+                }
+            });
+            
+            $(".player").draggable({
+                appendTo: "body",
+                cursor: "move",
+                helper: 'clone',
+                revert: "invalid"
+            });
+
+            $("#game-userList").droppable({
+                tolerance: "intersect",
+                accept: ".player",
+                activeClass: "ui-state-default",
+                hoverClass: "ui-state-hover",
+                drop: function(event, ui) {
+                    $("#game-userList").append($(ui.draggable));
+                    sendTeamsToServer();
+                }
+            });        
+        }
+
+
+
+        function updateGameList(games){
+            $('#gameList').empty();
+            $.each(games, function(key, value){
+                if(value!="" && value !="/Lobi"){
+                    if(value!="/{{ request.user.username }}") {
+                        $('#gameList').append("<li class='gamename'>"+value.replace('/','')+"</li>");                           
+                    } 
+                }
+
+            })
+        }
+
+        function getTime(){
+            var date = new Date();
+            return (date.getHours() < 10 ? '0' + date.getHours().toString() :
+                date.getHours()) + ':' + (date.getMinutes() < 10 ? '0' +
+                date.getMinutes().toString() : date.getMinutes());
+        }
+
+        function getTeams(){
+            radiant_team = [];
+            dire_team = [];
+            $(".radiant_box").children().each(function(){
+                radiant_team.push($(this).text());
+            })
+            $(".dire_box").children().each(function(){
+                dire_team.push($(this).text());
+            })
+
+            return {'radiant_team': radiant_team, 'dire_team': dire_team}
+        }
+
+        function sendTeamsToServer(){
+            getTeams();
+            iosocket.emit('update_clients_teams', {'room': currentRoom, 'teams': getTeams()});
+        }
+
+
+        $(document).on('click', "[class^=gamename]", function(){
+            el = $(this);
+            joinGame(el.text());
+        })
+
+
+        $(document).on('click', ".user-tooltip",  function() {
+            el = $(this);
+            $.get(el.data('load'), function(response) {
+                el.unbind('click').popover({
+                content: response,
+                placement: 'left',
+                html: true,
+                selector: '.user-tooltip',
+                delay: {show: 500, hide: 100}
+                }).popover('show');
+            });
+        })
+
+        $(document).on('mouseup', function(e) {
+            if(!$(e.target).closest('.popover').length) {
+                $('.popover').each(function(){
+                    $(this.previousSibling).popover('hide');
+                });
+            }
+        });
+
+
+        $('#msg').keypress(function(e){
+            if(e.which == 13){
+                iosocket.emit('sendchat', 'Lobi', $('input#msg').val());
+                $('input#msg').val("");
+                e.stopPropagation();
+                e.stopped = true;
+                e.preventDefault();
+            }
+        })
+
+        $(document).on('keypress', '#game-msg', function(e){
+            if(e.which == 13){
+                iosocket.emit('sendchat', currentRoom, $('input#game-msg').val());
+                $('input#game-msg').val("");
+                e.stopPropagation();
+                e.stopped = true;
+                e.preventDefault();
+            }
+        });
+
+
+        function joinGame(owner){
+            if(currentRoom==null){
+                name = owner;
+                currentRoom = owner;
+                if($('#tab'+name).length > 0){
+                    $('#tabs a[href="#tab'+name+'"]').tab('show');
+                } else {
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close closeTab" type="button" onclick="window.location = \'/nodetest/\';">×</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    tab_content = '<div class="tab-pane" id="tab'+name+'">';
+                    tab_content += $('#gametab-content').html();
+                    tab_content += '</div>';
+                    $('.tab-content').append(tab_content);
+                    $('#tabs a:last').tab('show');
+                    iosocket.emit('subscribe', {room: name})
+                }
+            }
+        }
+
+        $('#addgame').on('click', function(){
+            if(currentRoom==null){
+                name = '{{request.user.username}}';
+                currentRoom = '{{request.user.username}}';
+                if($('#tab'+name).length > 0){
+                    $('#tabs a[href="#tab'+name+'"]').tab('show');
+                } else {
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close closeTab" type="button" onclick="window.location = \'/nodetest/\';">×</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    tab_content = '<div class="tab-pane" id="tab'+name+'">';
+                    tab_content += $('#gametab-content').html();
+                    tab_content += '</div>';
+                    $('.tab-content').append(tab_content);
+                    $('#tabs a:last').tab('show');
+                    iosocket.emit('subscribe', {'room': name})
+     /*               $( "#radiant_box, #dire_box").sortable(
+                        { 
+                            connectWith: ".connectedSortable",
+                            update : function(event, ui) {
+                                        var order = $(this).sortable('toArray').toString();
+                                        alert($(this).attr('id')+ " " +order);
+                                    }
+                        }).disableSelection();*/
+                    $('#startbutton').html('<a id="startgame" class="btn">Oyunu Başlat</a>');
+                    
+                    $(".radiant_box").droppable({
+                        tolerance: "intersect",
+                        accept: function(d){
+                            teams = getTeams();
+                            if(d.hasClass("player") && teams.radiant_team.length < 5){
+                                return true;
+                            }
+                        },
+                        activeClass: "ui-state-default",
+                        hoverClass: "ui-state-hover",
+                        drop: function(event, ui) {
+                            $(this).append($(ui.draggable));
+                            sendTeamsToServer();
+                        }
+                    });
+
+                    $(".dire_box").droppable({
+                        tolerance: "intersect",
+                        accept: function(d){
+                            teams = getTeams();
+                            if(d.hasClass("player") && teams.dire_team.length < 5){
+                                return true;
+                            }
+                        },
+                        activeClass: "ui-state-default",
+                        hoverClass: "ui-state-hover",
+                        drop: function(event, ui) {        
+                            $(this).append($(ui.draggable));
+                            sendTeamsToServer();
+                        }
+                    });
+                }
+
+            }
+        });
+
+        $(document).on('click', '#startgame', function(){
+            getTeams();
+            console.log("Radiant: "+radiant_team+" Dire: "+dire_team);
+        })
+
+        /*$(document).on('click', '.closeTab', function(){
+            var tabContentId = $(this).parent().attr("href");
+            $(this).parent().parent().remove();
+            $('#tabs a:last').tab('show');
+            $(tabContentId).remove();
+            iosocket.emit('unsubscribe', {room: currentRoom});   
+            currentRoom = null;      
+        })*/
+
+    });
+</script>
+{% endblock extra_head %}
+{% block content %}
+ 
+    
+<ul class="nav nav-tabs" id="tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">Lobi</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span2 no-space">
+              Bağlı Oyuncular<hr>
+              <div id="userList"></div>
+            </div>
+            <div class="span6 no-space">
+              Sohbet Penceresi<hr>
+              <div id="chatPanel"></div>  
+            </div>
+            <div class="span4 no-space">
+              Kurulu Oyunlar<hr>
+              <div id="gameList"></div>  
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span2">
+              <a id="addgame" class="btn">Oyun Lobime Git</a>
+            </div>
+            <div class="span10 no-space">
+              <div><input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="msg"></div>  
+            </div>  
+          </div>
+        </div>
+    </div>
+</div>
+
+<div id="gametab-content" style="display: none">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 no-space">
+                Bağlı Oyuncular
+                <div id="game-userList"></div>
+            </div>
+            <div class="span10 no-space">
+
+                <div id="dropZone">
+                    <div class="stack">
+                        <div class="stackHdr">
+                            Radiant
+                        </div>
+                        <div class="radiant_box">
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="stack">
+                        <div class="stackHdr">
+                            Dire
+                        </div>
+                        <div class="dire_box">
+                            
+                        </div>
+                    </div>
+                </div>
+ 
+            </div>
+        </div>
+        <div class="row-fluid">
+        <div class="span12">
+                            Sohbet Penceresi<hr>
+                <div id="game-chatPanel"></div>  
+        </div> 
+        </div>
+        <div class="row-fluid">
+            <div class="span2" id="startbutton">
+               
+            </div>
+            <div class="span10 no-space">
+                <div><input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="game-msg"></div>  
+            </div>  
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

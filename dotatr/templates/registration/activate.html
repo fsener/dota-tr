@@ -1,0 +1,10 @@
+{% extends "registration/registration_base.html" %}
+{% block title %}{% if account %}Hesap Aktivasyonu Başarılı{% else %}Aktivasyon Sorunu{% endif %}{% endblock %}
+{% block content %}
+{% if account %}
+Dota-TR'ye hoşgeldin {{ account }}! Artık <a href='{% url 'auth_login' %}'>buradan</a> giriş yaparak siteyi kullanabilirsiniz.
+{% else %}
+Aktivasyon anahtarı hatalı. Lütfen aktivasyon için kullandığınız adresi tekrar kontrol edin.
+{% endif %}
+{% endblock %}
+

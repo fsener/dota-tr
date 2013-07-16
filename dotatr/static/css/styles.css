@@ -1,0 +1,48 @@
+
+#log {
+    color: #CCC;
+}
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+    padding-right: 30px
+}
+.message-text {
+    font-size: 1.4em;
+    color: black;
+}
+
+#select-lib {
+    border: medium none;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 3px #808080 inset;
+    font-size: 30px;
+    height: 50px;
+    width: 100%;
+    line-height: 1.2em;
+    line-height: 26px\9; /*for IE */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
+}
+.message-delete {
+    position:absolute;
+    right: 3px;
+    top:3px;
+}
+.message-delete a {
+    color: red;
+    text-decoration: none;
+}
+.message-delete a:hover {
+    text-decoration: none;
+}
+.message-delete-image {
+    width: 24px;
+    height: 24px;
+    background-image: url('../img/delete.png');
+    display: inline-block;
+}

@@ -1,0 +1,17 @@
+{% comment %}
+This template is used for the html alternative of the activation email
+if you use a django-registration backend that looks for it. e.g.
+https://github.com/huseyinyilmaz/django-registration-extended-backend
+{% endcomment %}<body>
+<h3>{{ site.name }} Kayıt Onaylama</h3>
+<p>
+<b>{{ site.name }}</b> adresinde oluşturduğunuz üyeliği onaylamak için aşağıdaki adresi kullanabilirsiniz.<br/>
+</p>
+<p>
+Aşağıdaki link <b>{{ expiration_days }}</b> gün içerisinde kullanılabilir.<br/>
+<a href="http://{{site.domain}}{% url 'registration_activate' activation_key %}">http://{{site.domain}}{% url 'registration_activate' activation_key %}</a>
+</p>
+<p>
+{{ site.name }} Kayıt Yönetimi
+</p>
+</body>

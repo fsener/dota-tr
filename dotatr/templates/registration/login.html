@@ -1,0 +1,24 @@
+{% extends "registration/registration_base.html" %}
+{% block title %}Giriş{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="span6 well">
+            <legend>Giriş</legend>
+            {% if form.errors %}
+             <div class="alert alert-error">
+                <a class="close" data-dismiss="alert" href="#">×</a>Kullanıcı adı ve şifre bilgileri uyuşmadı. Lütfen bilgileri kontrol edin.
+            </div>           
+            {% endif %}
+
+            <form method="post" action="{% url 'auth_login' %}">{% csrf_token %}
+            <input type="text" id="username" class="span6" name="username" placeholder="Kullanıcı adı">
+            <input type="password" id="password" class="span6" name="password" placeholder="Şifre">
+            <button type="submit" name="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+            <label class="string optional" for="user_remember_me"> <a href="{% url 'auth_password_reset' %}">Şifremi Unuttum!</a></label>
+        </div>
+    </div>
+</div>
+{% endblock %}

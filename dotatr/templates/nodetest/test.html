@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% block page_title %} Test Sayfası {% endblock page_title %}
+
+    {% block extra_head %}
+    <style>
+.no-space{/*border:1px solid #000;margin-left:0 !important;*/}
+#userList{
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#chatPanel{
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+    </style>
+    <script src="{{ async_url  }}/socket.io/socket.io.js"></script>
+    <script>
+
+        $(function(){
+            var iosocket = io.connect('http://localhost:8001');
+
+
+            function setCurrentUsers(usersStr) {
+                $('#userList').empty()
+
+                usersStr = jQuery.parseJSON(usersStr)
+                for (var name in usersStr) {
+                  if (usersStr.hasOwnProperty(name)) {
+                    $('#userList').prepend("<a href='#' id='user-tooltip' data-title='"+ name +" Hakkında' data-load='/nodetest/tooltip/"+ name +"'>" +name+ "</a><br>");
+                  }
+                }
+            }
+
+            function setRoomClients(clients) {
+              for(var i = 0, len = clients.length; i < len; i++){
+                if(clients[i]){
+
+                  $('#game-userList').prepend("<a href='#' id='user-tooltip' data-title='"+ client +" Hakkında' data-load='/nodetest/tooltip/"+ client +"'>" +client+ "</a><br>");
+                }
+              }
+            }
+
+
+
+            // return a short time format for the messages
+             function getTime(){
+                 var date = new Date();
+                 return (date.getHours() < 10 ? '0' + date.getHours().toString() :
+                                date.getHours()) + ':' + (date.getMinutes() < 10 ? '0' +
+                                date.getMinutes().toString() : date.getMinutes());
+             }
+
+
+
+            $(document).on('click', "#user-tooltip",  function() {
+              el = $(this);
+              $.get(el.data('load'), function(response) {
+                el.unbind('click').popover({
+                  content: response,
+                  placement: 'left',
+                  html: true,
+                  selector: '#user-tooltip',
+                  delay: {show: 500, hide: 100}
+                }).popover('show');
+              });
+            })
+
+            $(document).on('mouseleave', "#user-tooltip",  function() {
+                el = $(this);
+                el.popover('hide') 
+            });
+
+            function appendNewMessage(msg) {
+                var html;
+                html = "<small>["+ getTime() +"]</small> <span class='label label-inverse'>" + msg.source + "</span> : " + msg.message + "<br/>"
+                $('#chatPanel').prepend(html);
+            }
+              // every client can create a new room, when creating one, the client
+             // is unsubscribed from the current room and then subscribed to the
+             // room he just created, if he trying to create a room with the same
+             // name like another room, then the server will subscribe the user
+             // to the existing room
+            function createGame(){
+
+                 /*var room = $('#addroom-popup .input input').val().trim();
+                 if(room && room.length <= ROOM_MAX_LENGTH &&
+                                          room != currentRoom){
+               
+              // show room creating message
+              $('.chat-shadow').show().find('.content')
+                                    .html('Creating room: ' + room + '...');
+              $('.chat-shadow').animate({ 'opacity': 1 }, 200);
+               
+              // unsubscribe from the current room
+              socket.emit('unsubscribe', { room: currentRoom });
+             
+              // create and subscribe to the new room
+              socket.emit('subscribe', { room: room });
+              Avgrund.hide();
+                 } else {
+              shake('#addroom-popup', '#addroom-popup .input input',
+                                      'shake', 'yellow');
+              $('#addroom-popup .input input').val('');
+                 }*/
+            }
+
+            function joinGame(name){
+              if($('#tab'+name).length > 0){
+                    $('#tabs a[href="#tab'+name+'"]').tab('show');
+              } else {
+                    iosocket.emit('subscribe', {room:   name})
+                    $('<li><a href="#tab'+name+'" data-toggle="tab">'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    tab_content = '<div class="tab-pane" id="tab'+name+'">';
+                    tab_content += $('#gametab-content').html();
+                    tab_content += '</div>';
+                    $('.tab-content').append(tab_content);
+                    $('#tabs a:last').tab('show');
+              }
+            };
+
+
+            $('#addgame').on('click', function(){
+                  iosocket.emit('subscribe',{'room': '{{request.user.username}}'})
+                  if($('#tab{{ request.user.username }}').length > 0){
+                    $('#tabs a[href="#tab{{request.user.username}}"]').tab('show');
+                  } else {
+                    $('<li><a href="#tab{{ request.user.username }}" data-toggle="tab">{{ request.user.username }} Lobisi</a></li>').appendTo('#tabs');
+                    $('<div class="tab-pane" id="tab{{ request.user.username }}"><div id=""clientList></div></div>').appendTo('.tab-content');
+                    $('#tabs a:last').tab('show');
+                  }
+            });
+
+            $(document).on('click', "[class^=gamename]",  function() {
+              el = $(this);
+              joinGame(el.text());
+            })
+
+            function setCurrentGames(games) {
+                $('#gameList').empty()
+                //console.log(games)
+                for(var i = 0, len = games.length; i < len; i++){
+                   if(games[i] != '' && games[i] != '/Lobi'){
+                      games[i] = games[i].replace('/','');
+                      $('#gameList').prepend("<span class='gamename label label-info'>" +games[i] + "</span><br>");
+                   }
+                }
+            }
+
+            function sendMessage() {
+                iosocket.emit('message', 
+                            {
+                              "message": $('input#msg').val(),
+                            });
+                $('input#msg').val("");
+            }
+
+            $('#msg').keypress(function(e) {
+                if (e.keyCode == 13) {
+                  sendMessage();
+                  e.stopPropagation();
+                  e.stopped = true;
+                  e.preventDefault();
+                }
+            });
+
+
+            iosocket.on('connect', function () {
+
+                iosocket.emit('set username', {'username': '{{ request.user }}', 'userid': '{{ request.user.pk }}'})
+
+
+                iosocket.on('userJoined', function(userName){
+
+                    $('#chatPanel').prepend("<span class='text-success'>"+ userName.userName + " kanala katıldı. </span><br/>");         
+                })
+
+
+                iosocket.on('welcome', function(userName){
+
+                    $('#chatPanel').prepend("<span class='text-info'> Sohbet lobisine hoşgeldin "+ userName.userName + "</span><br/>");              
+                })
+
+
+                iosocket.on('userLeft', function(userName){
+
+                    $('#chatPanel').prepend("<span class='text-error'>"+userName.userName + " kanaldan ayrıldı. </span><br>");              
+                })
+
+                iosocket.on('message', function(msg) {
+                    appendNewMessage(msg);
+                  });                
+
+
+                iosocket.on('error', function(data){
+                  if(data.userNameInUse){
+                    $('#chatPanel').prepend("Bu nick zaten sistemde kayıtlı. <br>"); 
+                  }
+                                 
+                })
+
+
+                iosocket.on('disconnect', function() {
+                    $('#chatPanel').prepend('<li>Bağlantı Kesildi!</li>');
+                });
+
+                iosocket.on('updateList', function(msg){  
+                    setCurrentUsers(msg.currentUsers);       
+                })
+
+                iosocket.on('roomslist', function(data){ 
+                    setCurrentGames(data.rooms)
+                });
+
+
+                iosocket.on('roomclients', function(data){
+                  console.log(data.clients);
+                  setRoomClients(data.clients);
+                });
+
+
+            });
+ 
+        });
+    </script>
+    {% endblock extra_head %}
+
+{% block content %}
+ 
+    
+    <ul class="nav nav-tabs" id="tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Lobi</a></li>
+    </ul>
+    
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <div class="container-fluid">
+              <div class="row-fluid">
+                <div class="span2 no-space">
+                  Bağlı Oyuncular<hr>
+                  <div id="userList"></div>
+                </div>
+                <div class="span6 no-space">
+                  Sohbet Penceresi<hr>
+                  <div id="chatPanel"></div>  
+                </div>
+                <div class="span4 no-space">
+                  Kurulu Oyunlar<hr>
+                  <div id="gameList"></div>  
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <a id="addgame" class="btn">Oyun Odası Oluştur</a>
+                </div>
+                <div class="span10 no-space">
+                  <div><input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="msg"></div>  
+                </div>  
+              </div>
+            </div>
+        </div>
+    </div>
+
+<div id="gametab-content" style="display: none">
+            <div class="container-fluid">
+              <div class="row-fluid">
+                <div class="span4 no-space">
+                  Bağlı Oyuncular<hr>
+                  <div id="game-userList"></div>
+                </div>
+                <div class="span8 no-space">
+                  Sohbet Penceresi<hr>
+                  <div id="game-chatPanel"></div>  
+                </div>
+              </div>
+              <div class="row-fluid">
+                <div class="span2">
+                  <a id="addgame" class="btn">Oyunu Başlat</a>
+                </div>
+                <div class="span10 no-space">
+                  <div><input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="msg"></div>  
+                </div>  
+              </div>
+            </div>
+</div>
+
+{% endblock content %}

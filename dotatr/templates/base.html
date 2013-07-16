@@ -1,0 +1,121 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}dotatr{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- This file store project specific CSS -->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+    <!-- Use this to quickly test CSS changes in a template,
+        then move to project.css -->
+    {% block extra_css %}{% endblock extra_css %}
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{% static 'js/jsrender.js' %}"></script>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+{% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#" name="top"></a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="active"><a href="{% url 'index' %}"><i class="icon-home icon-white"></i> Anasayfa</a></li>
+          <li class="divider-vertical"></li>
+          <li><a href="/nodetest/"><i class="icon-road icon-white"></i> Lig Sistemi</a></li>
+          <li><a href="#"><i class="icon-signal icon-white"></i> İstatistikler</a></li>
+          <li class="divider-vertical"></li>
+        </ul>
+        {% if not user.is_authenticated %}
+        <ul class="nav pull-right">
+          <li><a href="{% url 'registration_register' %}">Kayıt ol</a></li>
+          <li class="divider-vertical"></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Giriş Yap <strong class="caret"></strong></a>
+            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+              <form method="post" action="{% url 'auth_login' %}">{% csrf_token %}
+                <input style="margin-bottom: 15px;" type="text" placeholder="Kullanıcı Adı" id="username" name="username">
+                <input style="margin-bottom: 15px;" type="password" placeholder="Şifre" id="password" name="password">
+                <label class="string optional"> <a href="{% url 'auth_password_reset' %}">Şifremi Unuttum!</a></label>
+                <input class="btn btn-primary btn-block" type="submit" id="sign-in" value="Giriş Yap">
+              </form>
+            </div>
+          </li>
+        </ul>
+        {% else %}
+        <ul class="nav pull-right">
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/user/preferences"><i class="icon-cog"></i> Tercihler</a></li>
+                    <li><a href="/help/support"><i class="icon-envelope"></i> İletişim</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'auth_logout' %}"><i class="icon-off"></i> Çıkış yap</a></li>
+                </ul>
+            </li>
+        </ul>
+        {% endif %}
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </div>
+  <!--/.navbar-inner -->
+</div>
+    <div class="container">
+
+      <h1>{% block page_title %}{% endblock page_title %}</h1>
+
+            {% block js_templates %}{% endblock %}
+      {% block content %}
+      {% endblock content %}
+
+    </div> 
+    <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- place project specific Javascript in this file -->
+    <script src="{% static 'js/project.js' %}"></script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'dotatr'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    {% block extra_js %}{% endblock extra_js %}
+  </body>
+</html>

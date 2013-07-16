@@ -1,0 +1,1 @@
+{{ site.name }} Kayıt Onaylama

@@ -1,0 +1,6 @@
+{{ site.name }} adresinde oluşturduğunuz üyeliği onaylamak için aşağıdaki adresi kullanabilirsiniz.
+
+Aşağıdaki link {{ expiration_days }} gün içerisinde kullanılabilir.
+http://{{site.domain}}{% url 'registration_activate' activation_key %}
+
+{{ site.name }} Kayıt Yönetimi
