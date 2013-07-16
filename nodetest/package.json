@@ -1,11 +1,6 @@
-{
-     "name": "nodetest",
-     "description": "example lobby",
-     "version": "0.0.1",
-     "dependencies": {
-        "socket.io": "0.9.16",
-     },
-    "engines": {
-    "node": "0.10.12",
-  }
+{ "dependencies" : { "socket.io" : "0.9.16" },
+  "description" : "example lobby",
+  "engines" : { "node" : "0.10.12" },
+  "name" : "nodetest",
+  "version" : "0.0.1"
 }
