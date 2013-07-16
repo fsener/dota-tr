@@ -11,7 +11,7 @@ var main_room = 'Lobi';
 
 io.sockets.on('connection', function(socket){
   socket.on('adduser', function(username){
-    if (usernames[user.username] === undefined) {
+    if (usernames[username] === undefined) {
       socket.username = username;
       usernames[username] = username;
       
