@@ -90,6 +90,10 @@ SECRET_KEY = get_env_setting('SECRET_KEY')
 #ALLOWED_HOSTS = []
 ########## END SITE CONFIGURATION
 
+MEDIA_ROOT = '/var/www/media/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = '/var/www/static/'
+STATIC_URL = '/static/'
 
 ASYNC_BACKEND_URL = 'http://dota-tr.com:8001'
 STEAM_API_KEY = environ.get('STEAM_API_KEY', '')
