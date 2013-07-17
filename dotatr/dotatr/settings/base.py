@@ -202,6 +202,7 @@ THIRD_PARTY_APPS = (
     'social_auth',
     'registration',
     'easy_thumbnails',
+    'gunicorn',
 )
 
 # Apps specific for this project go here.
