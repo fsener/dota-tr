@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}dotatr{% endblock title %}</title>
+    <title>{% block title %}Dota-TR{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -72,6 +72,7 @@
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="/user/preferences"><i class="icon-cog"></i> Tercihler</a></li>
+                    <li><a href="/associate/steam/"><img src="/static/img/steam_icon.png"></i> Steam ile bağlan</a></li>
                     <li><a href="/help/support"><i class="icon-envelope"></i> İletişim</a></li>
                     <li class="divider"></li>
                     <li><a href="{% url 'auth_logout' %}"><i class="icon-off"></i> Çıkış yap</a></li>

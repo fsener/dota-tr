@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 <style>
+    
     .no-space{/*border:1px solid #000;margin-left:0 !important;*/}
     #userList{
         height: 500px;
@@ -37,30 +38,30 @@
         background: #E3D3D3;
     }*/
 
-#dropZone {
-    border: 1px solid #eaeaea;
-    background-color: #ffffcc;
-}
-.player { 
-    padding: 5px 10px;
-    margin:5px;
-    border:1px solid #ccc;
-    background-color: #eaeaea;
-}
-.stack {
-    border: 1px solid #ccc;
-    background-color: #f5f5f5;
-    margin: 20px;
-}
-.stackHdr {
-    background-color: #eaeaea;
-    border: 1px solid #fff;
-    padding: 5px 
-}
-.radiant_box, .dire_box {
-    min-height:100px;
-    padding: 15px;
-}
+    #dropZone {
+        border: 1px solid #eaeaea;
+        background-color: #ffffcc;
+    }
+    .player { 
+        padding: 5px 10px;
+        margin:5px;
+        border:1px solid #ccc;
+        background-color: #eaeaea;
+    }
+    .stack {
+        border: 1px solid #ccc;
+        background-color: #f5f5f5;
+        margin: 20px;
+    }
+    .stackHdr {
+        background-color: #eaeaea;
+        border: 1px solid #fff;
+        padding: 5px 
+    }
+    .radiant_box, .dire_box {
+        min-height:100px;
+        padding: 15px;
+    }
 
 
 /*    #sortableUsers, #radiant_box, #dire_box {
@@ -104,21 +105,25 @@
         });
         iosocket.on('user_dc_from_game', function(data){
             if(data.room == currentRoom) {
-                $('#game-chatPanel').prepend(data.username+" oyundan ayrıldı.<br>");
+                $('#game-chatPanel').append(data.username+" oyundan ayrıldı.<br>");
                 $('#player-'+data.username).remove();                
             }
 
         });
 
         iosocket.on('update_player_positions', function(data){
-            $('.radiant_box').empty();
+            $('.radiant_box').html('');
             $.each(data.radiant_team, function(key, value){
                 $('.radiant_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
-            })
-            $('.dire_box').empty();
+            });
+            $('.dire_box').html('');
             $.each(data.dire_team, function(key, value){
                 $('.dire_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
-            })
+            });
+            $('#game-userList').html('');
+            $.each(data.online_users, function(key, value){
+                $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+            });            
             
         })
 
@@ -134,8 +139,9 @@
             } else {
                 html += "<span class='label label-inverse'> " + user + " </span> : "
             }
-            html += message + "<br/>"
-            panel.prepend(html);
+            html += message + "</br>"
+            panel.append(html);
+            panel.scrollTop(panel[0].scrollHeight);
         }
 
         function updateUserList(users){
@@ -146,20 +152,23 @@
         }
 
         function updateGameUserList(data){
-            $('#game-userList').empty();
+            $('#game-userList').html('')
             $.each(data.users, function(key, value) {
-                if($('#player-'+value).length > 0) {
+                //if($('#player-'+value).length > 0) {
                     //
-                } else {
+                //} else {
                 $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
-                }
+                //}
             });
             
             $(".player").draggable({
                 appendTo: "body",
                 cursor: "move",
                 helper: 'clone',
-                revert: "invalid"
+                revert: "invalid",
+
+                /*start: function(event, ui) { $(this).popover("hide") }
+                stop: function(event, ui) { $(this).popover("show") }*/ 
             });
 
             $("#game-userList").droppable({
@@ -196,20 +205,23 @@
         }
 
         function getTeams(){
+            online_users = [];
             radiant_team = [];
             dire_team = [];
-            $(".radiant_box").children().each(function(){
+            $(".radiant_box").children().not('.popover').each(function(){
                 radiant_team.push($(this).text());
             })
-            $(".dire_box").children().each(function(){
+            $(".dire_box").children().not('.popover').each(function(){
                 dire_team.push($(this).text());
             })
 
-            return {'radiant_team': radiant_team, 'dire_team': dire_team}
+            $("#game-userList").children().each(function(){
+                online_users.push($(this).text());
+            })
+            return {'radiant_team': radiant_team, 'dire_team': dire_team, 'online_users': online_users}
         }
 
         function sendTeamsToServer(){
-            getTeams();
             iosocket.emit('update_clients_teams', {'room': currentRoom, 'teams': getTeams()});
         }
 
@@ -223,9 +235,9 @@
         $(document).on('click', ".user-tooltip",  function() {
             el = $(this);
             $.get(el.data('load'), function(response) {
-                el.unbind('click').popover({
+                el.popover({
                 content: response,
-                placement: 'left',
+                placement: 'bottom',
                 html: true,
                 selector: '.user-tooltip',
                 delay: {show: 500, hide: 100}
@@ -308,8 +320,7 @@
                     $(".radiant_box").droppable({
                         tolerance: "intersect",
                         accept: function(d){
-                            teams = getTeams();
-                            if(d.hasClass("player") && teams.radiant_team.length < 5){
+                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5){
                                 return true;
                             }
                         },
@@ -324,8 +335,7 @@
                     $(".dire_box").droppable({
                         tolerance: "intersect",
                         accept: function(d){
-                            teams = getTeams();
-                            if(d.hasClass("player") && teams.dire_team.length < 5){
+                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5){
                                 return true;
                             }
                         },
@@ -440,6 +450,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock content %}

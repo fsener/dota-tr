@@ -6,6 +6,8 @@
 {{ user_data.extra_data.steamid }}
 <img src="{{ user_data.extra_data.avatarmedium }}"><br>
 
+<img src="{{ request.user.social_auth.extra_data.avatarmedium }}"><br>
+
    {% if news %}
         {% for article in news %}
             <div class="row">
