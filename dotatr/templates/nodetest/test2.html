@@ -16,10 +16,12 @@
 
     #chatPanel{
         height: 500px;
+        word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #ccc;
         background-color: #fff;
+        font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans serif;
     }
 
     #gameList{
@@ -130,7 +132,7 @@
         iosocket.on('user_dc_from_game', function(data){
             if(data.room == currentRoom) {
                 updateChat(data.room, 'Sunucu', data.username+" oyundan ayrıldı.")
-                $('#player-'+data.username).remove();                
+                $('.player-'+data.username).remove();    
             }
 
         });
@@ -139,21 +141,21 @@
             if(data.room == currentRoom) {
                 updateChat(data.room, 'Sunucu', data.username+" oyuna katıldı.")           
             }
-
+            iosocket.emit('update_client_teams', {'room': currentRoom, 'name': data.username, 'teams': getTeams()});
         });
 
         iosocket.on('update_player_positions', function(data){
             $('.radiant_box').html('');
             $.each(data.radiant_team, function(key, value){
-                $('.radiant_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+                $('.radiant_box').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });
             $('.dire_box').html('');
             $.each(data.dire_team, function(key, value){
-                $('.dire_box').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+                $('.dire_box').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });
             $('#game-userList').html('');
             $.each(data.online_users, function(key, value){
-                $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+                $('#game-userList').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });            
             
         })
@@ -176,6 +178,7 @@
             panel.append(el);
             if(room=='Lobi') { $('#chatPanel>div.chat:even').css("background-color", "#F0F0F0"); } else {
             $('#game-chatPanel>div.chat:even').css("background-color", "#F0F0F0"); }
+            if(user=='Sunucu') { el.fadeOut(6000, "linear"); }
             jQuery(el).gemoticon();
             panel.scrollTop(panel[0].scrollHeight);
         }
@@ -190,10 +193,10 @@
         function updateGameUserList(data){
             $('#game-userList').html('')
             $.each(data.users, function(key, value) {
-                if($('#player-'+value).length > 0) {
-                    
+                if($('.player-'+value).length > 0) {
+                    //
                 } else {
-                $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
+                $('#game-userList').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
                 }
             });
             if(data.room == "{{request.user.username }}") {
@@ -249,7 +252,7 @@
                 dire_team.push($(this).text());
             })
 
-            $("#game-userList").children().each(function(){
+            $("#game-userList").children().not('.popover').not('.popover').each(function(){
                 online_users.push($(this).text());
             })
             return {'radiant_team': radiant_team, 'dire_team': dire_team, 'online_users': online_users}
@@ -306,7 +309,7 @@
                     rules: {
                         msg: {
                             required: true,
-                            maxlength: 70,
+                            maxlength: 250,
                         },
                     },
                     submitHandler: function(form) {

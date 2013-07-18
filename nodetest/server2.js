@@ -13,7 +13,7 @@ io.sockets.on('connection', function(socket){
   socket.on('adduser', function(username){
     if (usernames[username] === undefined) {
       socket.username = username;
-      usernames[username] = username;
+      usernames[username] = socket;
       
       socket.room = main_room;
       socket.join(main_room);
@@ -35,7 +35,7 @@ io.sockets.on('connection', function(socket){
       socket.join(data.room);
       socket.room = data.room;
       io.sockets.in(data.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': data.room});
-      io.sockets.in(data.room).emit('user_connected_to_game', {'room': data.room , 'username': socket.username});
+      socket.broadcast.to(data.room).emit('user_connected_to_game', {'room': data.room , 'username': socket.username});
 
     } else {
       // creates a new game
@@ -51,6 +51,7 @@ io.sockets.on('connection', function(socket){
     socket.leave(data.room);
     io.sockets.in(socket.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': socket.room});
     io.sockets.in(socket.room).emit('user_dc_from_game', {'room': socket.room, 'username': socket.username});
+
     socket.room = main_room;
   });
 
@@ -59,7 +60,6 @@ io.sockets.on('connection', function(socket){
   });
 
   socket.on('disconnect', function(){
-    console.log("x");
     delete usernames[socket.username];
 
     socket.leave(main_room);
@@ -76,6 +76,11 @@ io.sockets.on('connection', function(socket){
 
   socket.on('update_clients_teams', function(data){
     socket.broadcast.to(data.room).emit('update_player_positions', data.teams);
+  })
+
+  socket.on('update_client_teams', function(data){
+    console.log(data.name);
+    io.sockets.socket(usernames[data.name].id).emit('update_player_positions', data.teams);
   })
 
 });
