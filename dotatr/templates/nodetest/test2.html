@@ -154,11 +154,11 @@
         function updateGameUserList(data){
             $('#game-userList').html('')
             $.each(data.users, function(key, value) {
-                //if($('#player-'+value).length > 0) {
-                    //
-                //} else {
+                if($('#player-'+value).length > 0) {
+                    
+                } else {
                 $('#game-userList').append("<div class='user-tooltip player' id='player-"+value+"' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
-                //}
+                }
             });
             
             $(".player").draggable({
