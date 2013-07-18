@@ -67,6 +67,11 @@ DATABASES = {
 
 ########## END DATABASE CONFIGURATION
 
+ADMINS = (
+    ('Ruless', 'ruless@gmail.com'),
+)
+
+
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches

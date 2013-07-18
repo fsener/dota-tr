@@ -35,7 +35,7 @@ io.sockets.on('connection', function(socket){
       socket.join(data.room);
       socket.room = data.room;
       io.sockets.in(data.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': data.room});
-      io.sockets.emit('user_connect_to_game', socket.username);
+      io.sockets.in(data.room).emit('user_connected_to_game', {'room': data.room , 'username': socket.username});
 
     } else {
       // creates a new game
@@ -68,6 +68,7 @@ io.sockets.on('connection', function(socket){
     if(socket.room != main_room) {
       io.sockets.in(socket.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': socket.room});
       io.sockets.in(socket.room).emit('user_dc_from_game', {'room': socket.room, 'username': socket.username});
+      io.sockets.emit('gamelist', getGames() );
     }
 
     socket.broadcast.emit('updatechat', main_room, 'Sunucu', socket.username + ' lig lobisinden ayrıldı.');
