@@ -6,6 +6,7 @@ app.listen(8001)
 function handler(req,res){}
 
 var usernames = {};
+var rooms = {};
 
 var main_room = 'Lobi';
 
@@ -31,11 +32,14 @@ io.sockets.on('connection', function(socket){
     if (current_games.indexOf('/'+data.room) != -1)
     {
       // joins a created game
+      console.log(rooms[data.room]);
       console.log(socket.username + " has joined to " +data.room);
       socket.join(data.room);
       socket.room = data.room;
+      socket.emit('update_player_positions', rooms[data.room]);
       io.sockets.in(data.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': data.room});
       socket.broadcast.to(data.room).emit('user_connected_to_game', {'room': data.room , 'username': socket.username});
+      
 
     } else {
       // creates a new game
@@ -75,13 +79,14 @@ io.sockets.on('connection', function(socket){
   });
 
   socket.on('update_clients_teams', function(data){
+    rooms[data.room] = data.teams;
     socket.broadcast.to(data.room).emit('update_player_positions', data.teams);
   })
 
-  socket.on('update_client_teams', function(data){
+  /*socket.on('update_client_teams', function(data){
     console.log(data.name);
     io.sockets.socket(usernames[data.name].id).emit('update_player_positions', data.teams);
-  })
+  })*/
 
 });
 

@@ -168,7 +168,6 @@
             if(data.room == currentRoom) {
                 updateChat(data.room, 'Sunucu', data.username+" oyuna katıldı.")           
             }
-            iosocket.emit('update_client_teams', {'room': currentRoom, 'name': data.username, 'teams': getTeams()});
         });
 
         iosocket.on('update_player_positions', function(data){
