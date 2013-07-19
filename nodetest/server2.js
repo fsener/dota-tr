@@ -76,7 +76,7 @@ io.sockets.on('connection', function(socket){
       }
       
       //socket.leave(main_room);
-      //socket.leave(socket.room);
+      socket.leave(socket.room);
 
       // update main user list of all clients 
       io.sockets.emit('userlist', getUsers(main_room));
