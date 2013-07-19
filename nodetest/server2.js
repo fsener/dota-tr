@@ -66,6 +66,9 @@ io.sockets.on('connection', function(socket){
   socket.on('disconnect', function(){
     delete usernames[socket.username];
     socket.leave(socket.room);
+    // update main user list of all clients 
+    io.sockets.emit('userlist', getUsers(main_room));
+
     // if the user disconnected while in a lobby
     if(socket.room != main_room) {
       // if the user disconnected was the owner of the lobby
@@ -78,8 +81,6 @@ io.sockets.on('connection', function(socket){
       //socket.leave(main_room);
 
 
-      // update main user list of all clients 
-      io.sockets.emit('userlist', getUsers(main_room));
 
       io.sockets.in(socket.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': socket.room});
       io.sockets.in(socket.room).emit('user_dc_from_game', {'room': socket.room, 'username': socket.username});
