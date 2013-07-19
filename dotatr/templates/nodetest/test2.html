@@ -10,8 +10,7 @@
         height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid #ccc;
-        background-color: #EFF9EF;
+        background-color: rgba(0, 0, 0, 0.4)
     }
 
     #chatPanel{
@@ -19,16 +18,29 @@
         word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid #ccc;
-        background-color: #EFF9EF;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .chat {
+        color: white;
+        background-color: rgba(232, 123, 112, 0.1);
+    }
+
+    .chat-player {
+        font-family: freight-sans-pro, sans-serif;
+        font-size: 1.2em;
+        color: #fff;
+        text-shadow:
+            0 1px #808d93,
+            -1px 0 #000000;
     }
 
     #gameList{
         height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid #ccc;
-        background-color: #D6EFD6;
+        border: 1px solid rgba(0, 0, 0, 0.9);
+        background-color: rgba(150, 150, 150, 0.1);
     }
 
     #game-chatPanel {
@@ -36,15 +48,13 @@
         word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid #eaeaea;
-        background-color: #EFF9EF;
+        background-color: rgba(0, 0, 0, 0.6);
     }
     #game-userList{
         height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid #eaeaea;
-        background-color: #EFF9EF;
+        background-color: rgba(0, 0, 0, 0.4)
     }
 
     #gamechat label.error {
@@ -58,18 +68,19 @@
         padding: 5px 10px;
         margin:5px;
         border:1px solid #ccc;
-        background-color: #E82B0E;
+        background-color: rgba(255, 0, 0, 0.3);
         color: white; text-shadow: black 0.1em 0.1em 0.2em;     
     }
 
     .gamename:hover {
         border:1px solid #ccc;
-        background-color: #E8690E;      
+        background-color: rgba(100, 0, 0, 0.1);     
     }
 
     .tab-content {
         border: 1px solid #ccc;
         background-color: #E6F5FA;
+        background: url('../static/img/dota-2.jpg') no-repeat 80% 75%;;
     }
 
     #lobbychat, #addgame, #startgame, #gamechat{
@@ -83,35 +94,35 @@
     }
 
     #dropZone {
-        border: 1px solid #eaeaea;
-        background-color: #EFF9EF;
+        background-color: rgba(0, 0, 0, 0.9);
     }
     .player { 
         padding: 5px 10px;
         margin:5px;
         border:1px solid #ccc;
-        background-color: #0099FF;
-        color: white;
+        background-color: rgba(255, 255, 255, 0.4);
+        color: black;
         text-shadow: 2px 2px 1px rgba(0,0,0,0.3);
     }
     .player:hover { 
         border:1px solid #0099FF;
-        background-color: #fbfbfb;
-        color: black;
+        background-color: rgba(0, 0, 100, 0.3);
+        color: white;
     }
     .stack {
-        border: 1px solid #ccc;
-        background-color: #f5f5f5;
-        margin: 20px;
+        margin-top: 20px;
     }
     .stackHdr {
-        background-color: #eaeaea;
-        border: 1px solid #fff;
-        padding: 5px 
+        background-color: rgba(255, 0, 0,  0.4);
+        padding: 5px;
+        color: white;
+        text-align: center;
     }
     .radiant_box, .dire_box {
         min-height:100px;
         padding: 15px;
+        background-color: rgba(255, 255, 255,  0.1);
+        margin-bottom: 10px;
     }
 
 .input-block-level {
@@ -120,6 +131,8 @@
   min-height: 28px;        // Make inputs at least the height of their button counterpart
   .box-sizing(border-box); // Makes inputs behave like true block-level elements
 }
+
+.nav .active a { background:blue!important } 
 
 /*    #sortableUsers, #radiant_box, #dire_box {
         margin:0px;
@@ -208,13 +221,18 @@
             if(user=='Sunucu'){
                 html += " "+user+ " : ";
             } else {
-                html += "<span class='label label-inverse'> " + user + " </span> : "
+                html += "<span class='chat-player'> " + user + " </span> : "
             }
             html += message + "</br>"
             var el = jQuery('<div class="chat">'+html+'</div>');
             panel.append(el);
-            if(room=='Lobi') { $('#chatPanel>div.chat:even').css("background-color", "#fbfbfb"); } else {
-            $('#game-chatPanel>div.chat:even').css("background-color", "#fbfbfb"); }
+
+            if(room=='Lobi') { 
+                $('#chatPanel>div.chat:even').css("background-color", "rgba(112, 123, 112, 0.2);");
+            } else {
+                $('#game-chatPanel>div.chat:even').css("background-color", "rgba(112, 123, 112, 0.2);"); 
+            }
+
             if(user=='Sunucu') { el.fadeOut(10000, "linear"); }
             jQuery(el).gemoticon();
             panel.scrollTop(panel[0].scrollHeight);
@@ -264,7 +282,7 @@
             $.each(games, function(key, value){
                 if(value!="" && value !="/Lobi"){
                     if(value!="/{{ request.user.username }}") {
-                        $('#gameList').append("<li class='gamename'>"+value.replace('/','')+"</li>");                           
+                        $('#gameList').append("<div class='gamename'>"+value.replace('/','')+"</div>");                           
                     } 
                 }
 
@@ -506,7 +524,7 @@
 {% endblock extra_head %}
 {% block content %}
 
-<ul class="nav nav-pills  nav-stacked" id="tabs">
+<ul class="nav nav-pills nav-stacked" id="tabs">
     <li class="active"><a href="#tab1" data-toggle="tab">Ana Lobi</a></li>
 </ul>
 <div class="tab-content">
