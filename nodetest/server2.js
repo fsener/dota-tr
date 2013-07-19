@@ -14,7 +14,7 @@ io.sockets.on('connection', function(socket){
   socket.on('adduser', function(username){
     if (usernames[username] === undefined) {
       socket.username = username;
-      usernames[username] = socket;
+      usernames[username] = username;
       
       socket.room = main_room;
       socket.join(main_room);
@@ -32,10 +32,9 @@ io.sockets.on('connection', function(socket){
     if (current_games.indexOf('/'+data.room) != -1)
     {
       // joins a created game
-      console.log(rooms[data.room]);
-      console.log(socket.username + " has joined to " +data.room);
       socket.join(data.room);
       socket.room = data.room;
+      console.log(rooms[data.room])
       socket.emit('update_player_positions', rooms[data.room]);
       io.sockets.in(data.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': data.room});
       socket.broadcast.to(data.room).emit('user_connected_to_game', {'room': data.room , 'username': socket.username});
@@ -43,6 +42,7 @@ io.sockets.on('connection', function(socket){
 
     } else {
       // creates a new game
+      rooms[data.room] = {};
       console.log(socket.username + " has created " +data.room);
       socket.join(data.room);
       socket.room = data.room;
@@ -66,10 +66,21 @@ io.sockets.on('connection', function(socket){
   socket.on('disconnect', function(){
     delete usernames[socket.username];
 
-    socket.leave(main_room);
-    socket.leave(socket.room);
-    io.sockets.emit('userlist', getUsers(main_room));
+    // if the user disconnected while in a lobby
     if(socket.room != main_room) {
+      // if the user disconnected was the owner of the lobby
+      if(socket.room == socket.username){
+        // for all players in that game to leave the game channel
+        io.sockets.in(socket.room).emit('game_closed_by_creator');
+        io.sockets.clients(socket.room).forEach(function(listener) {listener.leave(socket.room)})
+      }
+      
+      //socket.leave(main_room);
+      //socket.leave(socket.room);
+
+      // update main user list of all clients 
+      io.sockets.emit('userlist', getUsers(main_room));
+
       io.sockets.in(socket.room).emit('game_userlist', {'users': getUsers(socket.room), 'room': socket.room});
       io.sockets.in(socket.room).emit('user_dc_from_game', {'room': socket.room, 'username': socket.username});
       io.sockets.emit('gamelist', getGames() );
@@ -78,9 +89,11 @@ io.sockets.on('connection', function(socket){
     socket.broadcast.emit('updatechat', main_room, 'Sunucu', socket.username + ' lig lobisinden ayrıldı.');
   });
 
+
   socket.on('update_clients_teams', function(data){
     rooms[data.room] = data.teams;
-    socket.broadcast.to(data.room).emit('update_player_positions', data.teams);
+    //for(var key in data.teams) { console.log(data.teams[key]); }
+    socket.broadcast.to(data.room).emit('update_player_positions', rooms[data.room]);
   })
 
   /*socket.on('update_client_teams', function(data){

@@ -171,19 +171,30 @@
         });
 
         iosocket.on('update_player_positions', function(data){
-            $('.radiant_box').html('');
+            $('.radiant_box').children().remove();
             $.each(data.radiant_team, function(key, value){
+                console.log("radiant: "+value)
                 $('.radiant_box').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });
-            $('.dire_box').html('');
+            $('.dire_box').children().remove();
             $.each(data.dire_team, function(key, value){
+                console.log("dire: "+ value)
                 $('.dire_box').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });
-            $('#game-userList').html('');
+            $('#game-userList').children().remove();
             $.each(data.online_users, function(key, value){
+                console.log("online: "+value)
                 $('#game-userList').append("<div class='user-tooltip player player-"+value+"' id='' data-title='"+ value +" Hakkında' data-load='/nodetest/tooltip/"+ value +"'>"+value+"</div>");
             });            
-            
+            console.log(" ")
+        })
+
+        iosocket.on('game_closed_by_creator', function() {
+            $('#warningModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+            });
+            $('#warningModal').modal('show')
         })
 
         function updateChat(room,user,message){
@@ -271,6 +282,7 @@
             online_users = [];
             radiant_team = [];
             dire_team = [];
+
             $(".radiant_box").children().not('.popover').each(function(){
                 radiant_team.push($(this).text());
             })
@@ -281,6 +293,11 @@
             $("#game-userList").children().not('.popover').not('.popover').each(function(){
                 online_users.push($(this).text());
             })
+
+            online_users = $.unique(online_users);
+            radiant_team = $.unique(radiant_team);
+            dire_team = $.unique(dire_team);
+            console.log("users: "+online_users+" radiant: "+radiant_team+" dire: "+dire_team)
             return {'radiant_team': radiant_team, 'dire_team': dire_team, 'online_users': online_users}
         }
 
@@ -415,7 +432,7 @@
                 if($('#tab'+name).length > 0){
                     $('#tabs a[href="#tab'+name+'"]').tab('show');
                 } else {
-                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close" type="button" onclick="window.location = \'/nodetest/\';"> [ Lobiden Ayrıl ]</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="btn pull-right" type="button" onclick="window.location = \'/nodetest/\';"> [ Oyunu Kapat ]</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
                     tab_content = '<div class="tab-pane" id="tab'+name+'">';
                     tab_content += $('#gametab-content').html();
                     tab_content += '</div>';
@@ -431,11 +448,10 @@
                                     }
                         }).disableSelection();*/
                     $('#startbutton').html('<a id="startgame" class="btn btn-block btn-danger">Oyunu Başlat</a>');
-                    
                     $(".radiant_box").droppable({
                         tolerance: "intersect",
                         accept: function(d){
-                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5){
+                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5 ){
                                 return true;
                             }
                         },
@@ -450,13 +466,13 @@
                     $(".dire_box").droppable({
                         tolerance: "intersect",
                         accept: function(d){
-                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5){
+                            if(d.hasClass("player") && $(this).children().not('.popover').size() < 5 ){
                                 return true;
                             }
                         },
                         activeClass: "ui-state-default",
                         hoverClass: "ui-state-hover",
-                        drop: function(event, ui) {        
+                        drop: function(event, ui) {    
                             $(this).append($(ui.draggable));
                             sendTeamsToServer();
                         }
@@ -469,6 +485,10 @@
         $(document).on('click', '#startgame', function(){
             getTeams();
             console.log("Radiant: "+radiant_team+" Dire: "+dire_team);
+        })
+
+        $('.closedGame').on('click', function() {
+            window.location.replace("/nodetest/");
         })
 
 
@@ -568,6 +588,19 @@
             </div>  
         </div>
     </div>
+</div>
+
+<div id="warningModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close closedGame" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="warningModalLabel">Kurucu Oyundan Ayrıldı !</h3>
+  </div>
+  <div class="modal-body">
+    <p>Oyun kurucusu lobiden ayrıldığı için oyun otomatik olarak kapatıldı. Lütfen ana lobiye dönüp başka bir oyuna girin.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-warning closedGame">ANA LOBİYE DÖN</button>
+  </div>
 </div>
 
 <script src="{{ async_url  }}/socket.io/socket.io.js"></script>
