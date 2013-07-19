@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_title %} Test Sayfası {% endblock page_title %}
+{% block page_title %} Dota-TR Lobisi {% endblock page_title %}
 
 {% block extra_head %}
 <style>
@@ -11,7 +11,7 @@
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #ccc;
-        background-color: #fff;
+        background-color: #EFF9EF;
     }
 
     #chatPanel{
@@ -20,7 +20,7 @@
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #ccc;
-        background-color: #fff;
+        background-color: #EFF9EF;
     }
 
     #gameList{
@@ -28,22 +28,23 @@
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #ccc;
-        background-color: #fff;
+        background-color: #D6EFD6;
     }
 
     #game-chatPanel {
         height: 200px;
+        word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #eaeaea;
-        background-color: #fff;
+        background-color: #EFF9EF;
     }
     #game-userList{
         height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid #eaeaea;
-        background-color: #fff;
+        background-color: #EFF9EF;
     }
 
     #gamechat label.error {
@@ -57,11 +58,25 @@
         padding: 5px 10px;
         margin:5px;
         border:1px solid #ccc;
-        background-color: #eaeaea;        
+        background-color: #E82B0E;
+        color: white; text-shadow: black 0.1em 0.1em 0.2em;     
+    }
+
+    .gamename:hover {
+        border:1px solid #ccc;
+        background-color: #E8690E;      
+    }
+
+    .tab-content {
+        border: 1px solid #ccc;
+        background-color: #E6F5FA;
+    }
+
+    #lobbychat, #addgame, #startgame, #gamechat{
+        margin-top: 10px;
     }
 
     #lobbychat label.error {
-        margin-left: 10px;
         width: auto;
         display: inline;
         color: red;
@@ -69,13 +84,20 @@
 
     #dropZone {
         border: 1px solid #eaeaea;
-        background-color: #fff;
+        background-color: #EFF9EF;
     }
     .player { 
         padding: 5px 10px;
         margin:5px;
         border:1px solid #ccc;
-        background-color: #eaeaea;
+        background-color: #0099FF;
+        color: white;
+        text-shadow: 2px 2px 1px rgba(0,0,0,0.3);
+    }
+    .player:hover { 
+        border:1px solid #0099FF;
+        background-color: #fbfbfb;
+        color: black;
     }
     .stack {
         border: 1px solid #ccc;
@@ -92,6 +114,12 @@
         padding: 15px;
     }
 
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;        // Make inputs at least the height of their button counterpart
+  .box-sizing(border-box); // Makes inputs behave like true block-level elements
+}
 
 /*    #sortableUsers, #radiant_box, #dire_box {
         margin:0px;
@@ -175,9 +203,9 @@
             html += message + "</br>"
             var el = jQuery('<div class="chat">'+html+'</div>');
             panel.append(el);
-            if(room=='Lobi') { $('#chatPanel>div.chat:even').css("background-color", "#F0F0F0"); } else {
-            $('#game-chatPanel>div.chat:even').css("background-color", "#F0F0F0"); }
-            if(user=='Sunucu') { el.fadeOut(6000, "linear"); }
+            if(room=='Lobi') { $('#chatPanel>div.chat:even').css("background-color", "#fbfbfb"); } else {
+            $('#game-chatPanel>div.chat:even').css("background-color", "#fbfbfb"); }
+            if(user=='Sunucu') { el.fadeOut(10000, "linear"); }
             jQuery(el).gemoticon();
             panel.scrollTop(panel[0].scrollHeight);
         }
@@ -369,7 +397,7 @@
                 if($('#tab'+name).length > 0){
                     $('#tabs a[href="#tab'+name+'"]').tab('show');
                 } else {
-                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close closeTab" type="button" onclick="window.location = \'/nodetest/\';">×</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="btn pull-right" type="button" onclick="window.location = \'/nodetest/\';">Lobiden Ayrıl</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
                     tab_content = '<div class="tab-pane" id="tab'+name+'">';
                     tab_content += $('#gametab-content').html();
                     tab_content += '</div>';
@@ -378,6 +406,7 @@
                     iosocket.emit('subscribe', {room: name})
                 }
             }
+            else updateChat('Lobi', 'Sunucu' , '<span class="label label-important">Şu anda zaten açık bir oyundasınız.</span>');
         }
 
         $('#addgame').on('click', function(){
@@ -387,7 +416,7 @@
                 if($('#tab'+name).length > 0){
                     $('#tabs a[href="#tab'+name+'"]').tab('show');
                 } else {
-                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close closeTab" type="button" onclick="window.location = \'/nodetest/\';">×</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="close" type="button" onclick="window.location = \'/nodetest/\';"> [ Lobiden Ayrıl ]</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
                     tab_content = '<div class="tab-pane" id="tab'+name+'">';
                     tab_content += $('#gametab-content').html();
                     tab_content += '</div>';
@@ -402,7 +431,7 @@
                                         alert($(this).attr('id')+ " " +order);
                                     }
                         }).disableSelection();*/
-                    $('#startbutton').html('<a id="startgame" class="btn">Oyunu Başlat</a>');
+                    $('#startbutton').html('<a id="startgame" class="btn btn-block btn-danger">Oyunu Başlat</a>');
                     
                     $(".radiant_box").droppable({
                         tolerance: "intersect",
@@ -435,7 +464,7 @@
                     });
                 }
 
-            }
+            } else updateChat('Lobi', 'Sunucu' , '<span class="label label-important">Şu anda zaten açık bir oyundasınız.</span>');
         });
 
         $(document).on('click', '#startgame', function(){
@@ -457,36 +486,34 @@
 </script>
 {% endblock extra_head %}
 {% block content %}
-<link href="{% static 'css/gemoticons.css' %}" type="text/css" rel="stylesheet" />
-<script src="{% static 'js/jquery.gemoticons.js' %}"></script>
-<script src="{% static 'js/jquery.validate.js' %}"></script>
-<ul class="nav nav-tabs" id="tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab">Lobi</a></li>
+
+<ul class="nav nav-pills  nav-stacked" id="tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">Ana Lobi</a></li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="tab1">
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span2 no-space">
-                    Bağlı Oyuncular<hr>
+                    <h5>Bağlı Oyuncular</h5>
                     <div id="userList"></div>
                 </div>
                 <div class="span7 no-space">
-                Sohbet Penceresi<hr>
+                <h5>Sohbet</h5>
                 <div id="chatPanel"></div>  
                 </div>
                 <div class="span3 no-space">
-                    Kurulu Oyunlar<hr>
+                    <h5>Oyunlar</h5>
                     <div id="gameList"></div>  
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span2">
-                    <a id="addgame" class="btn">Oyun Lobime Git</a>
+                    <a id="addgame" class="btn btn-block btn-warning">Oyun Lobime Git</a>
                 </div>
-                <div class="span10 no-space">
+                <div class="span10">
                     <form id="lobbychat">  
-                        <input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="msg" name="msg">
+                        <input class="input input-block-level" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="msg" name="msg">
                     </form>
                 </div>  
             </div>
@@ -532,13 +559,13 @@
         </div> 
         </div>
         <div class="row-fluid">
-            <div class="span2" id="startbutton">
-               
-            </div>
             <div class="span10 no-space">
                     <form id="gamechat">  
-                        <input class="input-xxlarge" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="game-msg" name="gamemsg">
+                        <input class="input input-block-level" type="text" placeholder="Yazmak istediğiniz mesaj ..." id="game-msg" name="gamemsg">
                     </form>
+            </div>
+            <div class="span2" id="startbutton">
+               
             </div>  
         </div>
     </div>
@@ -547,4 +574,7 @@
 <script src="{{ async_url  }}/socket.io/socket.io.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link href="{% static 'css/gemoticons.css' %}" type="text/css" rel="stylesheet" />
+<script src="{% static 'js/jquery.gemoticons.js' %}"></script>
+<script src="{% static 'js/jquery.validate.js' %}"></script>
 {% endblock content %}
