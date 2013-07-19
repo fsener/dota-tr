@@ -432,7 +432,7 @@
                 if($('#tab'+name).length > 0){
                     $('#tabs a[href="#tab'+name+'"]').tab('show');
                 } else {
-                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="btn pull-right" type="button" onclick="window.location = \'/nodetest/\';"> [ Oyunu Kapat ]</button>'+name+' Lobisi</a></li>').appendTo('#tabs');
+                    $('<li><a href="#tab'+name+'" data-toggle="tab"><button class="btn btn-inverse pull-right" type="button" onclick="window.location = \'/nodetest/\';"> Oyunu Kapat </button>'+name+' Lobisi</a></li>').appendTo('#tabs');
                     tab_content = '<div class="tab-pane" id="tab'+name+'">';
                     tab_content += $('#gametab-content').html();
                     tab_content += '</div>';
@@ -447,7 +447,7 @@
                                         alert($(this).attr('id')+ " " +order);
                                     }
                         }).disableSelection();*/
-                    $('#startbutton').html('<a id="startgame" class="btn btn-block btn-danger">Oyunu Başlat</a>');
+                    $('#startbutton').html('<a id="startgame" class="btn btn-block btn-success">Oyunu Başlat</a>');
                     $(".radiant_box").droppable({
                         tolerance: "intersect",
                         accept: function(d){
