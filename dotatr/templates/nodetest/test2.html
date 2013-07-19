@@ -256,8 +256,6 @@
             });
             if(data.room == "{{request.user.username }}") {
                 $(".player").draggable({
-                    appendTo: "parent",
-                    cursor: "move",
                     helper: 'clone',
                     revert: "invalid",
                 });
