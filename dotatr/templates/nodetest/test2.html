@@ -256,7 +256,7 @@
             });
             if(data.room == "{{request.user.username }}") {
                 $(".player").draggable({
-                    appendTo: "body",
+                    appendTo: "parent",
                     cursor: "move",
                     helper: 'clone',
                     revert: "invalid",
