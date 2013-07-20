@@ -94,7 +94,7 @@ a:hover {
             <div id="slider" class="slider3d">
     {% for article in slideshow_news %}
     {% if article.image %}
-     <img src="{{ article.image.url }}" alt="{{ article.title }}">
+     <img src="{{ article.image.url }}" alt="<a href='{% url 'news_home' %}{{ article.slug }}'>{{ article.title }}</a>" data-href="http://www.google.com">
      {% endif %}
     {% endfor %}    
   </div>
