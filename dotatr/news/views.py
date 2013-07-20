@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 
 def home(request):
     news = Article.objects.order_by('-pub_date')
+    slideshow_news = Article.objects.filter(slideshow=True).order_by('-pub_date')[:5]
+    homepage_news = Article.objects.filter(slideshow=False).order_by('-pub_date')[:5]
     matches = ""
     if request.user.is_authenticated():
         try:
@@ -18,6 +20,8 @@ def home(request):
         user_data = 'nologin'
     return render(request, 'news/index.html', {
         'news': news, 
+        'slideshow_news': slideshow_news,
+        'homepage_news': homepage_news,
         'user_data': user_data,
         })
 
