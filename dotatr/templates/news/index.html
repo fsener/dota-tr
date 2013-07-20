@@ -1,51 +1,76 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% block page_title %}Anasayfa{% endblock page_title %}
+
+{% block extra_head %}
+<style>
+
+.media {
+  background-color: #ccc;
+  padding: 10px;
+}
+
+.media-heading {
+  background-color: #ddd;
+  padding: 2px;
+}
+
+
+.news-image {
+  display: inline-block;
+  background-color: yellow;
+
+}
+
+.news-footer {
+    padding-top: 10px;
+    clear: both;
+
+}
+</style>
+{% endblock extra_head %}
+
 {% block content %}
-
-{{ user_data.extra_data.steamid }}
-<img src="{{ user_data.extra_data.avatarmedium }}"><br>
-
-<img src="{{ request.user.social_auth.extra_data.avatarmedium }}"><br>
-
    {% if news %}
         {% for article in news %}
-            <div class="row">
-              <div class="span8">
-                <div class="row">
-                  <div class="span8">
-                    <h4><strong><a href="{% url 'news_home' %}{{ article.slug }}">{{ article.title }}</a></strong></h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="span2">
-                    <a href="#" class="thumbnail">
-                            <img src="{% thumbnail article.image 260x180 crop %}" alt="">
-                    </a>
-                  </div>
-                  <div class="span6">      
-                    <p>
-                       {{ article.content|truncatewords:15 }}
-                    </p>
-                    <p><a class="btn" href="{% url 'news_home' %}{{ article.slug }}"> Devamını Oku <a/></p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="span8">
-                    <p></p>
-                    <p>
-                        <i class="icon-user"></i> <a href="/profil/{{ article.publisher.pk }}">{{ article.publisher }}</a> 
-                        | <i class="icon-calendar"></i> {{ article.pub_date|timesince }}
-                        | <i class="icon-comment"></i> <a href="{% url 'news_home' %}{{ article.slug }}#disqus_thread">Yorumlar</a> 
-                        | <i class="icon-share"></i> <a href="{% url 'news_home' %}{{ article.slug }}"> Haberi Oku <a/>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr>
+
+
+        <div class="media">
+          <a href="#" class="pull-left"><img src="{% thumbnail article.image 200x120 crop %}" class="media-object" alt='' /></a>
+          <div class="media-body">
+            <h4 class="media-heading">
+              <a href="{% url 'news_home' %}{{ article.slug }}">{{ article.title }}</a>
+            </h4>
+            {{ article.content|truncatewords:50 }}
+          </div>
+          <div class="news-footer">
+            <p>
+                  <i class="icon-user"></i> <a href="/profil/{{ article.publisher.pk }}">{{ article.publisher }}</a> 
+                  | <i class="icon-calendar"></i> {{ article.pub_date|timesince }}
+                  | <i class="icon-comment"></i> <a href="{% url 'news_home' %}{{ article.slug }}#disqus_thread">Yorumlar</a> 
+                  | <i class="icon-share"></i> <a href="{% url 'news_home' %}{{ article.slug }}"> Haberi Oku </a>
+            </p>
+          </div>
+        </div>
+
+                  
         {% endfor %}
     {% else %}
         <p>Sistemde haber bulunamadı.</p>
     {% endif %}
+
+
+
+                    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'dotatr'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
 {% endblock content %}
