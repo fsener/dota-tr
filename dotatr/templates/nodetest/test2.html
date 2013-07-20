@@ -10,26 +10,32 @@
         height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
-        background-color: rgba(0, 0, 0, 0.4)
+        background-color: rgba(0, 0, 0, 0.1)
     }
 
     #chatPanel{
+        padding-left: 10px;
         height: 500px;
         word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
-        background-color: rgba(0, 0, 0, 0.6);
+        background-color: rgba(255, 255, 255, 0.5);
     }
 
     .chat {
-        color: white;
+        color: color;
         background-color: rgba(232, 123, 112, 0.1);
+    }
+
+    .chat-message {
+        color: black;
+        text-shadow: 2px 2px 1px rgba(0,0,0,0.3);
     }
 
     .chat-player {
         font-family: freight-sans-pro, sans-serif;
-        font-size: 1.2em;
-        color: #fff;
+        font-size: 1em;
+        color: red;
         text-shadow:
             0 1px #808d93,
             -1px 0 #000000;
@@ -39,7 +45,6 @@
         height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.9);
         background-color: rgba(150, 150, 150, 0.1);
     }
 
@@ -48,13 +53,14 @@
         word-wrap: break-word;
         overflow-y: auto;
         overflow-x: hidden;
-        background-color: rgba(0, 0, 0, 0.6);
+        border: 1px solid #ccc;
+        background-color: rgba(255, 255, 255, 0.9);
     }
     #game-userList{
         height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
-        background-color: rgba(0, 0, 0, 0.4)
+        background-color: rgba(0, 0, 0, 0.1)
     }
 
     #gamechat label.error {
@@ -68,19 +74,19 @@
         padding: 5px 10px;
         margin:5px;
         border:1px solid #ccc;
-        background-color: rgba(255, 0, 0, 0.3);
+        background-color: rgba(255, 0, 0, 0.6);
         color: white; text-shadow: black 0.1em 0.1em 0.2em;     
     }
 
     .gamename:hover {
         border:1px solid #ccc;
-        background-color: rgba(100, 0, 0, 0.1);     
+        background-color: rgba(255, 0, 0, 1);     
     }
 
     .tab-content {
         border: 1px solid #ccc;
         background-color: #E6F5FA;
-        background: url('../static/img/dota-2.jpg') no-repeat 80% 75%;;
+        background: url('../static/img/dota-2.jpg') no-repeat 100%  0% #fff;
     }
 
     #lobbychat, #addgame, #startgame, #gamechat{
@@ -94,7 +100,7 @@
     }
 
     #dropZone {
-        background-color: rgba(0, 0, 0, 0.9);
+
     }
     .player { 
         padding: 5px 10px;
@@ -111,9 +117,11 @@
     }
     .stack {
         margin-top: 20px;
+        margin-left: 20px;
+        border: 1px solid #ccc;
     }
     .stackHdr {
-        background-color: rgba(255, 0, 0,  0.4);
+        background-color: rgba(255, 0, 0,  0.9);
         padding: 5px;
         color: white;
         text-align: center;
@@ -121,7 +129,7 @@
     .radiant_box, .dire_box {
         min-height:100px;
         padding: 15px;
-        background-color: rgba(255, 255, 255,  0.1);
+        background-color: rgba(0, 0, 0, 0.2);
         margin-bottom: 10px;
     }
 
@@ -223,7 +231,7 @@
             } else {
                 html += "<span class='chat-player'> " + user + " </span> : "
             }
-            html += message + "</br>"
+            html += "<span class='chat-message'>"+ message + "</span>"
             var el = jQuery('<div class="chat">'+html+'</div>');
             panel.append(el);
 
@@ -256,7 +264,7 @@
             });
             if(data.room == "{{request.user.username }}") {
                 $(".player").draggable({
-                    appendTo: $('#dragcontent'),
+                    appendTo: "body",
                     helper: 'clone',
                     revert: "invalid",
                 });
@@ -530,15 +538,15 @@
     <div class="tab-pane active" id="tab1">
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span2 no-space">
+                <div class="span2">
                     <h5>Bağlı Oyuncular</h5>
                     <div id="userList"></div>
                 </div>
-                <div class="span7 no-space">
+                <div class="span7">
                 <h5>Sohbet</h5>
                 <div id="chatPanel"></div>  
                 </div>
-                <div class="span3 no-space">
+                <div class="span3">
                     <h5>Oyunlar</h5>
                     <div id="gameList"></div>  
                 </div>
@@ -620,7 +628,6 @@
   </div>
 </div>
 
-<div class="hide" id="dragcontent"></div>
 
 <script src="{{ async_url  }}/socket.io/socket.io.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
