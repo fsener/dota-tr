@@ -112,7 +112,7 @@ a.slider-nav {
 }
 
 #main {
-	width: 840px;	
+	width: 100%;	
 	padding: 40px 30px 20px 30px;
 	margin: 0 auto 40px auto;
 	position: relative;
