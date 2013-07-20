@@ -14,12 +14,12 @@
       body {
         padding-top: 40px;
         padding-bottom: 40px;
-        background: url("../static/img/background.jpg") no-repeat fixed center top #2B2B2D;
+        background: url("{% static 'img/background.jpg' %}") no-repeat fixed center top #2B2B2D;
       }
       .no-space{margin-left:0 !important;}
 
       .content {
-        background: url(../static/img/pattern.jpg) 0 0 repeat #1f1e21;
+        background: url("{% static 'img/pattern.jpg' %}") 0 0 repeat #1f1e21;
         box-shadow: 8px 0px 5px -5px #000, -8px 0px 5px -5px #000;
       }
       .right-block {
