@@ -105,11 +105,13 @@
 
 
       }
-      .box h3 {
+      .box h4 {
           text-shadow:1px 1px 0 rgba(0,0,0,0.5);
-          margin-top: 0;
+          
           background:#238fc0;
           color:#fff !important;
+          padding-top: 4px;
+          padding-bottom: 4px;
           padding-left: 4px;
           -webkit-border-top-right-radius: 10px;
           -moz-border-radius-topright: 10px;
@@ -118,7 +120,8 @@
 
       }   
       .box p {
-        padding: 5px; 
+        padding-left: 5px;
+        padding-bottom: 5px;
         color: #fbfbfb;
       }
 
@@ -134,7 +137,7 @@
         padding-bottom: 4px;
       }
       .box li {
-        padding: 2px;
+        
       }
       .box li:hover {
         background:#238fc0;
@@ -223,7 +226,7 @@
         </div>
         <div class="span3 right-block">
                    <div class="box">
-                    <h3>Son Gelişmeler</h3>
+                    <h4>Son Gelişmeler</h4>
                     <ul>
                         {% if latest_news %}
                           {% for article in latest_news %}
@@ -237,13 +240,13 @@
                   </div>
 
                   <div class="box">
-                    <h3>Diğer Block Örneği</h3>
-                    <p> &nbsp;IP Adresin: {{ ip_address }}</p>
+                    <h4>Diğer Block Örneği</h4>
+                    <p>IP Adresin: {{ ip_address }}</p>
                   </div>
 
                   <div class="box">
-                    <h3>Diğer Block Örneği</h3>
-                    <p> &nbsp; İçerik örneği</p>
+                    <h4>Diğer Block Örneği</h4>
+                    <p>İçerik örneği</p>
                   </div>
 
        </div>
