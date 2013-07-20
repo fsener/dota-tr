@@ -10,26 +10,139 @@
 
     <!-- Le styles -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,bold' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static 'css/slider/reset.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/slider/ccslider.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/slider/style.css' %}" />
+
+
+
     <style>
       body {
-        padding-top: 40px;
+        padding-top: 60px;
         padding-bottom: 40px;
         background: url("{% static 'img/background.jpg' %}") no-repeat fixed center top #2B2B2D;
         color: white;
       }
-      .no-space{margin-left:0 !important;}
+
 
       .content {
-        background: url("{% static 'img/pattern.jpg' %}") 0 0 repeat #1f1e21;
+        background: rgb(181,189,200); /* Old browsers */
+        background: -moz-linear-gradient(left,  rgba(181,189,200,1) 0%, rgba(130,140,149,1) 36%, rgba(40,52,59,1) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(181,189,200,1)), color-stop(36%,rgba(130,140,149,1)), color-stop(100%,rgba(40,52,59,1))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* IE10+ */
+        background: linear-gradient(to right,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=1 ); /* IE6-9 */
+
         box-shadow: 8px 0px 5px -5px #000, -8px 0px 5px -5px #000;
+
       }
 
       .right-block {
-        float: right;
-        width: 100%;
         background-color: #ccc;
-        padding: 10px;
         color: black;
+        min-height: 1000px !important;
+        background: rgb(96,108,136); /* Old browsers */
+        background: -moz-linear-gradient(left,  rgba(96,108,136,1) 0%, rgba(63,76,107,1) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(96,108,136,1)), color-stop(100%,rgba(63,76,107,1))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(left,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(left,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* IE10+ */
+        background: linear-gradient(to right,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=1 ); /* IE6-9 */
+
+        box-shadow: -8px 0px 8px -8px #000;
+
+        -webkit-border-bottom-right-radius: 10px;
+        -webkit-border-bottom-left-radius: 10px;
+        -moz-border-radius-bottomright: 10px;
+        -moz-border-radius-bottomleft: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+
+      }
+
+      footer {
+          margin-top: 70px;
+          height: 30px;
+
+          background:-moz-linear-gradient(top, #303030 0%, #171717 100%);
+          background:-webkit-linear-gradient(top, #303030 0%, #171717 100%);
+          background:-o-linear-gradient(top, #303030 0%, #171717 100%);
+          background:-ms-linear-gradient(top, #171717 0%, #171717 100%);
+          background:linear-gradient(top, #303030 0%, #171717 100%);
+          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#303030', endColorstr='#171717', GradientType=0);
+          padding-top: 10px;
+      }
+
+      footer p {
+         text-align: center;
+      }
+
+      .box {
+        margin-top: 5px;
+        margin-right: 10px;
+        margin-left: 10px;
+        
+
+        background:-moz-linear-gradient(top, #303030 0%, #171717 100%);
+        background:-webkit-linear-gradient(top, #303030 0%, #171717 100%);
+        background:-o-linear-gradient(top, #303030 0%, #171717 100%);
+        background:-ms-linear-gradient(top, #171717 0%, #171717 100%);
+        background:linear-gradient(top, #303030 0%, #171717 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#303030', endColorstr='#171717', GradientType=0);
+
+
+        -webkit-border-top-right-radius: 10px;
+        -webkit-border-top-left-radius: 10px;
+        -moz-border-radius-topright: 10px;
+        -moz-border-radius-topleft: 10px;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+
+
+        box-shadow:0 1px 7px rgba(0,0,0,0.5)
+
+
+
+      }
+      .box h3 {
+          text-shadow:1px 1px 0 rgba(0,0,0,0.5);
+          margin-top: 0;
+          background:#238fc0;
+          color:#fff !important;
+          padding-left: 4px;
+          -webkit-border-top-right-radius: 10px;
+          -moz-border-radius-topright: 10px;
+          border-top-right-radius: 10px;
+
+
+      }   
+      .box p {
+        padding: 5px; 
+        color: #fbfbfb;
+      }
+
+      .box a {
+        color: white;
+      }
+      .box a {
+        text-decoration: none;
+      }
+      .box ul { 
+        list-style-type: none; 
+        margin-left: 4px;
+        padding-bottom: 4px;
+      }
+      .box li {
+        padding: 2px;
+      }
+      .box li:hover {
+        background:#238fc0;
       }
     </style>
     <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
@@ -105,56 +218,60 @@
       <!--/.navbar-inner -->
     </div>
 
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="offset2 span8 content">
-          <div class="span12">
-            <div class="row-fluid">
-              <div class="span9">
+
+
+    <div class="container content ">
+
+
+
+  
+  <div id="caption" class="cc-caption">This is an example of a caption with a <a href="http://www.google.com">link</a></div>
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span9">
+            <div id="slider" class="slider3d">
+    {% for article in latest_news %}
+     <img src="{{ article.image.url }}" alt="{{ article.title }}">
+    {% endfor %}    
+  </div>
                 {% block content %}
                 {% endblock content %}
-              </div>
-              <div class="span3">
-                <div class="right-block">
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                                    content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                  content content content content content content content content content content 
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-    </div> 
-    <!-- /container -->
+        <div class="span3 right-block">
+                   <div class="box">
+                    <h3>Son Gelişmeler</h3>
+                    <ul>
+                        {% if latest_news %}
+                          {% for article in latest_news %}
+                          <li><a href="{% url 'news_home' %}{{ article.slug }}">{{ article.title }}</a></li>
+                          {% endfor %}
+                          {% else %}
+                          <li>Sistemde haber bulunamadı.</li>
+                        {% endif %}
+
+                   </ul> 
+                  </div>
+
+                  <div class="box">
+                    <h3>Diğer Block Örneği</h3>
+                    <p> &nbsp;IP Adresin: {{ ip_address }}</p>
+                  </div>
+
+                  <div class="box">
+                    <h3>Diğer Block Örneği</h3>
+                    <p> &nbsp; İçerik örneği</p>
+                  </div>
+
+       </div>
+      </div>
+
+      <footer>
+        <p>&copy; Dota-TR 2013</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
 
     <!-- Le javascript
     ================================================== -->
@@ -163,6 +280,11 @@
 
     <!-- place project specific Javascript in this file -->
     <script src="{% static 'js/project.js' %}"></script>
+
+  <script src="{% static 'js/slider/jquery.easing.1.3.min.js' %}"></script>
+    <script src="{% static 'js/slider/jquery.ccslider.pack.js' %}"></script>
+        <script src="{% static 'js/slider/demo.js' %}"></script>
+
 
     {% block extra_js %}{% endblock extra_js %}
   </body>

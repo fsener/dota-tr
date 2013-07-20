@@ -7,7 +7,7 @@ from social_auth.models import UserSocialAuth
 from django.contrib.auth.models import User
 
 def home(request):
-    news = Article.objects.all()
+    news = Article.objects.order_by('-pub_date')
     matches = ""
     if request.user.is_authenticated():
         try:

@@ -12,7 +12,7 @@ var main_room = 'Lobi';
 
 io.sockets.on('connection', function(socket){
   socket.on('adduser', function(username){
-    if (usernames[username] === undefined) {
+    if (usernames[username] == undefined) {
       socket.username = username;
       usernames[username] = username;
       
@@ -24,6 +24,8 @@ io.sockets.on('connection', function(socket){
 
       socket.emit('gamelist', getGames() );
       io.sockets.emit('userlist', getUsers(main_room) );
+    } else {
+      userNameAlreadyInUse(socket.id, username);
     }
   });
 
@@ -69,8 +71,9 @@ io.sockets.on('connection', function(socket){
     // update main user list of all clients 
     io.sockets.emit('userlist', getUsers(main_room));
 
+
     // if the user disconnected while in a lobby
-    if(socket.room != main_room) {
+    if(socket.room != main_room && socket.room != undefined) {
       // if the user disconnected was the owner of the lobby
       if(socket.room == socket.username){
         // for all players in that game to leave the game channel
@@ -86,8 +89,11 @@ io.sockets.on('connection', function(socket){
       io.sockets.in(socket.room).emit('user_dc_from_game', {'room': socket.room, 'username': socket.username});
       io.sockets.emit('gamelist', getGames() );
     }
+    if(socket.username != undefined) {
+      socket.broadcast.emit('updatechat', main_room, 'Sunucu', socket.username + ' lig lobisinden ayrıldı.');      
+    }
 
-    socket.broadcast.emit('updatechat', main_room, 'Sunucu', socket.username + ' lig lobisinden ayrıldı.');
+
   });
 
 
@@ -116,4 +122,10 @@ function getUsers(room){
   })
 
   return userlist;
+}
+
+function userNameAlreadyInUse(sId, uName) {
+  setTimeout(function() {
+    io.sockets.sockets[sId].emit('updatechat', main_room, 'Sunucu', 'Bu nick zaten sisteme giriş yapmış gözüküyor. Aynı anda sadece 1 pencereden lobi sistemini kullanabilirsiniz.');
+  }, 500);
 }
