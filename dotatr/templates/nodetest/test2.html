@@ -4,13 +4,27 @@
 
 {% block extra_head %}
 <style>
-    
     .no-space{/*border:1px solid #000;margin-left:0 !important;*/}
+
+    .content {
+        background: white;
+        background-color: rgba(0, 0, 0, 0);
+        box-shadow: none;
+    }
     #userList{
         height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
         background-color: rgba(0, 0, 0, 0.1)
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    .right-block {
+        background: none;
+        box-shadow: none;
     }
 
     #chatPanel{
@@ -84,6 +98,7 @@
     }
 
     .tab-content {
+        margin-left: 20px;
         border: 1px solid #ccc;
         background-color: #E6F5FA;
         background: url('{% static 'img/dota-2.jpg' %}') no-repeat 100%  0% #fff;
@@ -145,7 +160,23 @@
   .box-sizing(border-box); // Makes inputs behave like true block-level elements
 }
 
-.gamenav .active a { background:blue!important } 
+.gamenav {
+    margin-left: 20px;
+}
+
+.gamenav a { 
+    color:red;
+    background: white;!important 
+} 
+
+.gamenav .active a { 
+    color: white;
+    background: red;!important 
+} 
+.gamenav .active a:hover { 
+    color: black;
+    background: red;!important 
+} 
 
 /*    #sortableUsers, #radiant_box, #dire_box {
         margin:0px;
