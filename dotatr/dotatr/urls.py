@@ -43,6 +43,7 @@ urlpatterns = patterns('',
     ('^activity/', include('actstream.urls')),
     url(r'^accounts/register/$', RegistrationView.as_view(form_class=PlayerRegForm)), 
     (r'^accounts/', include('registration.backends.default.urls')),
+    (r'^forum/', include('djangobb_forum.urls', namespace='djangobb')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

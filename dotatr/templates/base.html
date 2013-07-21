@@ -78,7 +78,7 @@
          text-align: center;
       }
 
-      .box {
+      .blockbox {
         margin-top: 5px;
         margin-right: 10px;
         margin-left: 10px;
@@ -105,7 +105,7 @@
 
 
       }
-      .box h4 {
+      .blockbox h4 {
           text-shadow:1px 1px 0 rgba(0,0,0,0.5);
           
           background:#238fc0;
@@ -119,27 +119,27 @@
 
 
       }   
-      .box p {
+      .blockbox p {
         padding-left: 5px;
         padding-bottom: 5px;
         color: #fbfbfb;
       }
 
-      .box a {
+      .blockbox a {
         color: white;
       }
-      .box a {
+      .blockbox a {
         text-decoration: none;
       }
-      .box ul { 
+      .blockbox ul { 
         list-style-type: none; 
         margin-left: 4px;
         padding-bottom: 4px;
       }
-      .box li {
+      .blockbox li {
         
       }
-      .box li:hover {
+      .blockbox li:hover {
         background:#238fc0;
       }
     </style>
@@ -177,6 +177,7 @@
               <li class="divider-vertical"></li>
               <li><a href="/nodetest/"><i class="icon-road icon-white"></i> Lig Sistemi</a></li>
               <li><a href="#"><i class="icon-signal icon-white"></i> İstatistikler</a></li>
+              <li><a href="/forum/"><i class="icon-signal icon-white"></i> Forum</a></li>
               <li class="divider-vertical"></li>
             </ul>
             {% if not user.is_authenticated %}
@@ -218,14 +219,16 @@
 
 
 
-    <div class="container content ">
+    <div class="container content">
       <div class="row">
         <div class="span9">
+                {% block forum_header_content %}{% endblock forum_header_content %}
                 {% block content %}
                 {% endblock content %}
+                {% block forum_footer_content %}{% endblock forum_footer_content %}
         </div>
         <div class="span3 right-block">
-                   <div class="box">
+                   <div class="blockbox">
                     <h4>Son Gelişmeler</h4>
                     <ul>
                         {% if latest_news %}
@@ -239,12 +242,12 @@
                    </ul> 
                   </div>
 
-                  <div class="box">
+                  <div class="blockbox">
                     <h4>Diğer Block Örneği</h4>
                     <p>IP Adresin: {{ ip_address }}</p>
                   </div>
 
-                  <div class="box">
+                  <div class="blockbox">
                     <h4>Diğer Block Örneği</h4>
                     <p>İçerik örneği</p>
                   </div>

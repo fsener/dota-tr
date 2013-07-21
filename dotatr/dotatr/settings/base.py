@@ -3,7 +3,7 @@
 
 """Common settings and globals."""
 
-
+import os.path
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
@@ -65,6 +65,11 @@ TIME_ZONE = 'America/Los_Angeles'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'tr'
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('tr', 'Turkish'),
+) 
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
@@ -143,7 +148,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
     'dotatr.context_processors.ip_address_processor',
-    'dotatr.context_processors.block_contents'
+    'dotatr.context_processors.block_contents',
+    'djangobb_forum.context_processors.forum_settings',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -165,10 +171,16 @@ MIDDLEWARE_CLASSES = (
     # Default Django middleware.
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'djangobb_forum.middleware.LastLoginMiddleware',
+    'djangobb_forum.middleware.UsersOnline',
+    'djangobb_forum.middleware.TimezoneMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -205,6 +217,11 @@ THIRD_PARTY_APPS = (
     'registration',
     'easy_thumbnails',
     'gunicorn',
+    #'fretboard',
+    'typogrify',
+    'voting',
+    'djangobb_forum',
+    'pagination'
 )
 
 # Apps specific for this project go here.
@@ -276,3 +293,17 @@ SOCIAL_AUTH_PIPELINE = (
 
 
 LOGIN_REDIRECT_URL = '/'
+
+PAGINATE_BY = 10
+
+
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+# Haystack settings
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(PROJECT_ROOT, 'djangobb_index'),
+        'INCLUDE_SPELLING': True,
+    },
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
