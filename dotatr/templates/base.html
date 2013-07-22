@@ -14,117 +14,6 @@
 
 
 
-    <style>
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-        background: url("{% static 'img/background.jpg' %}") no-repeat fixed center top #2B2B2D;
-        color: white;
-      }
-
-
-      .content {
-
-
-background-color: #4F5C79;
-
-
-
-      }
-
-      .right-block {
-        background-color: #ccc;
-        color: black;
-        min-height: 1000px !important;
-
-background-color: #8b9abc;
-
-
-
-        box-shadow: -8px 0px 8px -8px #000;
-
-        -webkit-border-bottom-right-radius: 10px;
-        -webkit-border-bottom-left-radius: 10px;
-        -moz-border-radius-bottomright: 10px;
-        -moz-border-radius-bottomleft: 10px;
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
-
-      }
-
-      footer {
-          margin-top: 70px;
-          height: 30px;
-
-          background-color: #b59d6f;
-
-          padding-top: 10px;
-      }
-
-      footer p {
-         text-align: center;
-      }
-
-      .blockbox {
-        margin-top: 5px;
-        margin-right: 10px;
-        margin-left: 10px;
-        
-
-        background-color: #1a2a4f;
-
-
-        -webkit-border-top-right-radius: 10px;
-        -webkit-border-top-left-radius: 10px;
-        -moz-border-radius-topright: 10px;
-        -moz-border-radius-topleft: 10px;
-        border-top-right-radius: 10px;
-        border-top-left-radius: 10px;
-
-
-        box-shadow:0 1px 7px rgba(0,0,0,0.5)
-
-
-
-      }
-      .blockbox h4 {
-          text-shadow:1px 1px 0 rgba(0,0,0,0.5);
-          
-          background:#434a5b;
-          color:#fff !important;
-          padding-top: 4px;
-          padding-bottom: 4px;
-          padding-left: 4px;
-          -webkit-border-top-right-radius: 10px;
-          -moz-border-radius-topright: 10px;
-          border-top-right-radius: 10px;
-
-
-      }   
-      .blockbox p {
-        padding-left: 5px;
-        padding-bottom: 5px;
-        color: #fbfbfb;
-      }
-
-      .blockbox a {
-        color: white;
-      }
-      .blockbox a {
-        text-decoration: none;
-      }
-      .blockbox ul { 
-        list-style-type: none; 
-        margin-left: 4px;
-        padding-bottom: 4px;
-      }
-      .blockbox li {
-        
-      }
-      .blockbox li:hover {
-        background:#238fc0;
-      }
-    </style>
     <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -202,14 +91,11 @@ background-color: #8b9abc;
 
 
     <div class="container content">
+      <header>
+        <p></p>
+      </header>
       <div class="row">
         <div class="span9">
-          <div class="alert" style="margin:40px">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <center><h2> UYARI !</h2></center>
-            <strong>Site şu anda sadece online test amaçlı yayındadır ve yapım aşamasındadır. Arama motorları vb. ile bu siteye ulaştıysanız 
-            daha sonra tekrar ziyaret edip güncellemeleri kontrol edebilirsiniz. <br><br>İletişim için: ruless[at]gmail.com</strong>
-          </div>
                 {% block forum_header_content %}{% endblock forum_header_content %}
                 {% block content %}
                 {% endblock content %}
@@ -237,7 +123,7 @@ background-color: #8b9abc;
 
                   <div class="blockbox">
                     <h4>Diğer Block Örneği</h4>
-                    <p>İçerik örneği</p>
+                    <p>İçerik örneği <br> <a href="#">İçerik örneği</a></p>
                   </div>
 
        </div>
