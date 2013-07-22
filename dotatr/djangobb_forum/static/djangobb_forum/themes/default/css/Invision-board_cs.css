@@ -6,8 +6,8 @@
 
 .djangobb {COLOR: #333}
 
-A:link, .djangobb A:visited {COLOR: #1064B0}
-A:hover {COLOR: #000}
+.djangobb A:link, .djangobb A:visited {COLOR: #333; }
+.djangobb A:hover {COLOR: #000}
 
 .djangobb DIV.blockmenu LI.isactive A, #posterror LI STRONG {COLOR: #000}
 

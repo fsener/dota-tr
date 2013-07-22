@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block extra_head %}
-	<title>{{ forum_settings.FORUM_BASE_TITLE }} {% block title %}{% endblock %}</title>
+	{% block page_title %} {{ forum_settings.FORUM_BASE_TITLE }} {% endblock page_title %}
 
 	
 	{% set_theme_style request.user %}
