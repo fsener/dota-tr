@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # coding: utf-8
 
 import math
@@ -517,7 +520,7 @@ def add_topic(request, forum_id):
     }
     return render(request, 'djangobb_forum/add_topic.html', context)
 
-
+@login_required
 @transaction.commit_on_success
 def upload_avatar(request, username, template=None, form_class=None):
     user = get_object_or_404(User, username=username)
@@ -540,7 +543,7 @@ def upload_avatar(request, username, template=None, form_class=None):
                 'topic_count': topic_count,
                })
 
-
+@login_required
 @transaction.commit_on_success
 def user(request, username, section='essentials', action=None, template='djangobb_forum/profile/profile_essentials.html', form_class=EssentialsProfileForm):
     user = get_object_or_404(User, username=username)

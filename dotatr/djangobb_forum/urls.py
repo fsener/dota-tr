@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.conf.urls.defaults import *
 
 from djangobb_forum import settings as forum_settings
