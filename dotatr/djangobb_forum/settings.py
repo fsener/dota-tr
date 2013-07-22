@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # -*- coding: utf-8 -*-
 from django.conf import settings
 
@@ -5,7 +8,7 @@ def get(key, default):
     return getattr(settings, key, default)
 
 # FORUM Settings
-FORUM_BASE_TITLE = get('DJANGOBB_FORUM_BASE_TITLE', 'Django Bulletin Board')
+FORUM_BASE_TITLE = get('DJANGOBB_FORUM_BASE_TITLE', 'Forum')
 FORUM_META_DESCRIPTION = get('DJANGOBB_FORUM_META_DESCRIPTION', '')
 FORUM_META_KEYWORDS = get('DJANGOBB_FORUM_META_KEYWORDS', '')
 TOPIC_PAGE_SIZE = get('DJANGOBB_TOPIC_PAGE_SIZE', 10)
@@ -21,7 +24,7 @@ FORUM_LOGO_HEIGHT = get('DJANGOBB_FORUM_LOGO_HEIGHT', 16)
 SIGNATURE_MAX_LENGTH = get('DJANGOBB_SIGNATURE_MAX_LENGTH', 1024)
 SIGNATURE_MAX_LINES = get('DJANGOBB_SIGNATURE_MAX_LINES', 3)
 HEADER = get('DJANGOBB_HEADER', 'DjangoBB')
-TAGLINE = get('DJANGOBB_TAGLINE', 'Django based forum engine')
+TAGLINE = get('DJANGOBB_TAGLINE', '')
 DEFAULT_MARKUP = get('DJANGOBB_DEFAULT_MARKUP', 'bbcode')
 NOTICE = get('DJANGOBB_NOTICE', '')
 USER_ONLINE_TIMEOUT = get('DJANGOBB_USER_ONLINE_TIMEOUT', 15 * 60)

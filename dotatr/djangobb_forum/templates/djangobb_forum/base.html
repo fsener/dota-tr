@@ -2,8 +2,9 @@
 {% load forum_extras %}
 {% load i18n %}
 
+{% block page_title %} {{ forum_settings.FORUM_BASE_TITLE }} {% endblock page_title %}
 {% block extra_head %}
-	{% block page_title %} {{ forum_settings.FORUM_BASE_TITLE }} {% endblock page_title %}
+
 
 	
 	{% set_theme_style request.user %}
