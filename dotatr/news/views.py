@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 def home(request):
     news = Article.objects.order_by('-pub_date')
     slideshow_news = Article.objects.filter(slideshow=True).order_by('-pub_date')[:5]
-    homepage_news = Article.objects.filter(slideshow=False).order_by('-pub_date')[:5]
+    homepage_news = Article.objects.filter(slideshow=False).order_by('-pub_date')[:10]
     matches = ""
     if request.user.is_authenticated():
         try:

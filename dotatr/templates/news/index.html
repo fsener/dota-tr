@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load thumbnail %}
+{% load news_extras %}
 {% block page_title %}Anasayfa{% endblock page_title %}
 
 {% block extra_head %}
@@ -19,32 +20,35 @@
      {% endif %}
     {% endfor %}    
   </div>
-
-   {% if homepage_news %}
-        {% for article in homepage_news %}
-        <div class="media">
-          <a href="#" class="pull-left"><img src="{% thumbnail article.image 200x120 crop %}" class="media-object" alt='' /></a>
-          <div class="media-body">
-            <h4 class="media-heading">
-              <a href="{% url 'news_home' %}{{ article.slug }}">{{ article.title }}</a>
-            </h4>
-            {{ article.content|truncatewords:50 }}
-          </div>
-          <div class="news-footer">
-            <p>
-                  <i class="icon-user"></i> <a href="/profil/{{ article.publisher.pk }}">{{ article.publisher }}</a> 
-                  | <i class="icon-calendar"></i> {{ article.pub_date|timesince }}
-                  | <i class="icon-comment"></i> <a href="{% url 'news_home' %}{{ article.slug }}#disqus_thread">Yorumlar</a> 
-                  | <i class="icon-share"></i> <a href="{% url 'news_home' %}{{ article.slug }}"> Haberi Oku </a>
-            </p>
-          </div>
-        </div>                  
+  
+ {% if homepage_news %}
+  {% for articles in homepage_news|group_by:2 %}
+    <div class="row-fluid">
+        {% for article in articles %}
+            <div class="span6">
+                          <div class="media">
+                            <h4 class="media-heading">
+                              <a href="{% url 'news_home' %}{{ article.slug }}">{{ article.title }}</a>
+                            </h4>
+                            <h5 class="media-heading-sub">
+                              <i class="icon-user"></i> <a href="/profil/{{ article.publisher.pk }}">{{ article.publisher }}</a> tarafından  {{ article.pub_date|timesince }} önce gönderildi.
+                            </h5>
+                            <div class="media-body">
+                              <a href="#"><img src="{% thumbnail article.image 200x120 crop %}" class="media-object" alt='' /></a>
+                              <p class="media-content">{{ article.content|truncatewords:35 }}<a href="{% url 'news_home' %}{{ article.slug }}"> devamı</a></p>
+                            </div>
+                            <div class="news-footer">
+                                  <i class="icon-comment"></i> <a href="{% url 'news_home' %}{{ article.slug }}#disqus_thread">Yorumlar</a> 
+                            </div>
+                        </div> 
+            </div>
         {% endfor %}
+    </div>
+{% endfor %}
     {% else %}
         <p>Sistemde haber bulunamadı.</p>
     {% endif %}
-
-
+    
 {% block extra_js %}
                     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */

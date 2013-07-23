@@ -12,6 +12,7 @@ color: white;
 .content {
 background-color: #212320;
 box-shadow: -5px 0px 60px 10px #17FFAC;
+padding-left: 20px;
 }
 
 .right-block {
@@ -68,7 +69,7 @@ border-bottom-right-radius: 5px;
 font-size: 15px;
 text-shadow:1px 1px 0 #8a281b;
 margin-top: 0px;
-
+text-shadow:1px 1px 0 rgb(0,0,0);
 background: rgb(138,40,27); /* Old browsers */
 background: -moz-linear-gradient(top,  rgba(138,40,27,1) 0%, rgba(172,62,39,1) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(138,40,27,1)), color-stop(100%,rgba(172,62,39,1))); /* Chrome,Safari4+ */
@@ -110,26 +111,42 @@ background:#ac3e27;
 
 
 .media {
-  background-color: #1F2120;
+  background-color: #1A1B1D;
   padding: 10px;
   color: white;
-  margin-left: 10px;
   border: 1px solid #232323;
 
     -webkit-box-shadow: 0px 0px 8px 2px #1A1B1D;
        -moz-box-shadow: 0px 0px 8px 2px #1A1B1D;
             box-shadow: 0px 0px 8px 2px #1A1B1D;
-    padding-top: 0px;
 
+height: 300px;
+margin-bottom: 10px;
+
+position: relative
 }
+
+.media a {
+    color: #CC9951;
+}
+
 
 .media-heading {
 
     font-size:15px;
     line-height:20px;
 
+    background: rgb(138,40,27); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(138,40,27,1) 0%, rgba(172,62,39,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(138,40,27,1)), color-stop(100%,rgba(172,62,39,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(138,40,27,1) 0%,rgba(172,62,39,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(138,40,27,1) 0%,rgba(172,62,39,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(138,40,27,1) 0%,rgba(172,62,39,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(138,40,27,1) 0%,rgba(172,62,39,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8a281b', endColorstr='#ac3e27',GradientType=0 ); /* IE6-9 */
 
-    background: #1A1B1D;
+
+
 
     color:#000;
     padding:8px;
@@ -140,19 +157,26 @@ background:#ac3e27;
 
 }
 
-.media a {
-    color: #CC9951;
+.media-heading-sub {
+font-size: 12px;
+margin-top: 0px;
+text-align: right;
+    background-color: #1F2120;
+
+
 }
 
 .media-object {
-  border: 1px solid #1A1B1D;
+  border: 2px solid #1A1B1D;
+      float:left;
 }
 
-.news-footer {
-    width: 100%;
-    border-top: 1px solid #0B0C0C;
-    text-align: right;
-    padding-top: 10px;
-    clear: both;
 
+
+
+
+
+.news-footer {
+position: absolute; 
+bottom: 0;
 }
