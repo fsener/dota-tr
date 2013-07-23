@@ -40,7 +40,7 @@
 <div id="idx1" class="blocktable">
 {% for iter in cats %}
 	<h2 id="category_head_{{ iter.id }}">
-		<a class="toggle" href="#">Toggle shoutbox</a>
+		<a class="toggle" href="#">Gizle &darr;</a>
 		<span>
 			{{ iter.cat }}
 		</span>
@@ -99,7 +99,7 @@
 {% block lofi %}
 {% if forum_settings.LOFI_SUPPORT %}
     <p class="lofi">
-        <a href="{% url 'djangobb:lofi_index' %}">Lo-Fi Version</a>
+        <a href="{% url 'djangobb:lofi_index' %}"></a>
     </p>
 {% endif %}
 {% endblock %}

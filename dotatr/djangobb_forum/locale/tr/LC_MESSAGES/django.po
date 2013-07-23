@@ -300,7 +300,7 @@ msgstr "Konu"
 
 #: models.py:202
 msgid "Updated by"
-msgstr "tarafından güncellendi"
+msgstr "Güncelleyen:"
 
 #: models.py:203 templates/djangobb_forum/profile/profile_display.html:25
 msgid "Markup"
@@ -431,7 +431,7 @@ msgstr "Varsayılan biçimlendirme"
 #: models.py:321 templates/djangobb_forum/header.html:22
 #: templates/djangobb_forum/topic.html:99 templates/djangobb_forum/user.html:7
 msgid "Profile"
-msgstr "Profil"
+msgstr "Profilim"
 
 #: models.py:322
 msgid "Profiles"
@@ -443,7 +443,7 @@ msgstr "Mesaj izleme"
 
 #: models.py:350
 msgid "Reported by"
-msgstr "tarafından raporlandı"
+msgstr "Raporlayan"
 
 #: models.py:352
 msgid "Zapped"
@@ -495,7 +495,7 @@ msgstr "Yol"
 
 #: models.py:394
 msgid "Hash"
-msgstr "Şifrelemek"
+msgstr "Şifreleme"
 
 #: models.py:421
 msgid "How many choices are allowed simultaneously."
@@ -581,7 +581,7 @@ msgstr "Konu kaydedildi."
 
 #: views.py:524
 msgid "Your avatar uploaded."
-msgstr "Avatar'ın yüklendi"
+msgstr "Avatarın yüklendi"
 
 #: views.py:533 views.py:558
 msgid "Please sign in."
@@ -844,7 +844,7 @@ msgstr "Yeni mesajlar var"
 
 #: templates/djangobb_forum/header.html:39
 msgid "You are not logged in."
-msgstr "Giriş yapmadın"
+msgstr "Giriş yapılmadı."
 
 #: templates/djangobb_forum/header.html:42
 msgid "There are new reports"
@@ -860,11 +860,11 @@ msgstr "Tüm konuları okundu olarak işaretle"
 
 #: templates/djangobb_forum/index.html:71
 msgid "Board information"
-msgstr "Kurulu bilgi"
+msgstr "Forum bilgisi"
 
 #: templates/djangobb_forum/index.html:75
 msgid "Board statistics"
-msgstr "Kurulu istatistikler"
+msgstr "Forum istatistikleri"
 
 #: templates/djangobb_forum/index.html:76
 msgid "Total number of registered users:"
@@ -941,7 +941,7 @@ msgstr "Kapat"
 
 #: templates/djangobb_forum/moderators.html:3
 msgid "Moderated by"
-msgstr "tarafından Moderate edildi"
+msgstr "Forum yöneticileri:"
 
 #: templates/djangobb_forum/move_topic.html:7
 #: templates/djangobb_forum/topic.html:215
@@ -954,7 +954,7 @@ msgstr "Taşınacak hedefi seç"
 
 #: templates/djangobb_forum/move_topic.html:18
 msgid "Move to"
-msgstr "şuraya taşı"
+msgstr "Taşınacak yer"
 
 #: templates/djangobb_forum/pagination.html:3
 msgid "Pages"
@@ -966,7 +966,7 @@ msgstr "Mesajı raporla"
 
 #: templates/djangobb_forum/report.html:13
 msgid "Please enter a short reason why you are reporting this post"
-msgstr "Lütfen bu mesajı neden raporladıgınıza dair kısa bir neden giriniz"
+msgstr "Lütfen bu mesajı neden raporladığınıza dair kısa bir neden giriniz"
 
 #: templates/djangobb_forum/reputation.html:16
 msgid "Reputation of the user"
@@ -974,11 +974,11 @@ msgstr "Kullanıcının saygınlığı"
 
 #: templates/djangobb_forum/reputation.html:22
 msgid "From user"
-msgstr "Kullanıcıdan"
+msgstr "Gönderen"
 
 #: templates/djangobb_forum/reputation.html:23
 msgid "For post in topic"
-msgstr "Konuda ki mesaj için"
+msgstr "Mesajın bulunduğu konu"
 
 #: templates/djangobb_forum/reputation.html:25
 msgid "Estimation"
@@ -1014,7 +1014,7 @@ msgstr "Saygınlık ekle"
 
 #: templates/djangobb_forum/reputation_form.html:34
 msgid "Reduction of a reputation"
-msgstr "Saygınlık düşürme"
+msgstr "Saygınlık düşür"
 
 #: templates/djangobb_forum/search_form.html:13
 msgid "Enter your search criteria"
