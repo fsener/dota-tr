@@ -221,7 +221,7 @@ THIRD_PARTY_APPS = (
     'typogrify',
     'voting',
     'djangobb_forum',
-    'pagination'
+    'pagination', 
 )
 
 # Apps specific for this project go here.
@@ -229,6 +229,7 @@ LOCAL_APPS = (
     'news',
     'player',
     'nodetest',
+    'donation',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
