@@ -61,4 +61,5 @@ urlpatterns += patterns('',
     url(r'^disconnect/(?P<backend>[^/]+)/(?P<association_id>[^/]+)/$',
         disconnect,
         name='socialauth_disconnect_individual'),
+    url(r'^donation/', include('donation.urls')),
 )
