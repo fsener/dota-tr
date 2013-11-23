@@ -6,4 +6,4 @@ def donate_page(request):
 def donate_page_success(request):
 	#burda bilgiler gelicek
 	
-	return render(request, 'donation/donate_page_success.html', {})
+	return render(request, 'donation/donation_page_success.html', {})
