@@ -7,5 +7,5 @@ def donate_page(request):
 def donate_page_success(request):
 	#burda bilgiler gelicek
 	
-	pprint (vars(request))
+	pprint vars(request)
 	return render(request, 'donation/donate_page_success.html', {})
