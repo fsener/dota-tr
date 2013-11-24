@@ -1,7 +1,5 @@
 from django.shortcuts import render
-import json
-import base64
-import requests
+import json, urllib, base64, requests
 
 pdt_hash = "9Le9iJBWqevVdfaOUAx3XT3kDHrGXUnNmzcABlkJKNqIxHKCt_xTj9uho7G"
 
@@ -32,7 +30,7 @@ def parsePDT(pdt):
 	for line in pdts:
 		l = line.split('=')
 		if(len(l) > 1):
-			resultPDT[l[0]] = l[1]
+			resultPDT[l[0]] = urllib.unquote(l[1]).decode('utf8')
 
 	return resultPDT
 
