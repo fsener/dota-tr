@@ -7,7 +7,7 @@ def donate_page(request):
 	custom_json = json.dumps(custom_value);
 	custom_obfuscated = base64.standard_b64encode(custom_json)
 
-	return render(request, 'donation/donation_page.html', {custom: custom_obfuscated})
+	return render(request, 'donation/donation_page.html', {"custom": custom_obfuscated})
 
 def donate_page_success(request):
 	#burda bilgiler gelicek
