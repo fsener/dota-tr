@@ -11,4 +11,4 @@ def donate_page(request):
 	return render(request, 'donation/donation_page.html', {'custom': custom_obfuscated, 'o':"sometext"})
 
 def donate_page_success(request):
-	return render(request, 'donation/donation_page_success.html', {'tx': request.GET,})
+	return render(request, 'donation/donation_page_success.html', {'tx': request.GET, 'o':'o'})
