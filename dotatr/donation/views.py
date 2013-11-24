@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import json, urllib, base64, requests
+import json, base64, requests, urlparse
 
 pdt_hash = "9Le9iJBWqevVdfaOUAx3XT3kDHrGXUnNmzcABlkJKNqIxHKCt_xTj9uho7G"
 
@@ -22,15 +22,12 @@ def donate_page_success(req):
 
 
 def parsePDT(pdt):
-	pdts = urllib.unquote(pdt).decode('utf8').split('\n')
+	pdts = pdt.split('\n')
 
 	result = pdts.pop(0)
 	resultPDT = {'result': result}
 
-	for line in pdts:
-		l = line.split('=')
-		if(len(l) > 1):
-			resultPDT[l[0]] = l[1] 
+	resultPDT = urlparse.parse_qs("&".join(pdts))
 
 	return resultPDT
 
