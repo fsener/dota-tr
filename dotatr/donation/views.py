@@ -14,11 +14,24 @@ def donate_page(request):
 
 def donate_page_success(req):
 	getObj = dict(req.GET.iterlists())
-	print getObj
 
 	payload = {'cmd':"_notify-synch", 'tx':getObj[u'tx'], 'at': pdt_hash}
 	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr', params=payload)
 
-	print response.content['custom']
+	pdt = parsePDT(response)
 
-	return render(req, 'donation/donation_page_success.html', {'response': response})
+	return render(req, 'donation/donation_page_success.html', {'response': pdt})
+
+
+def parsePDT(pdt):
+	pdts = pdt.split('\n')
+
+	result = pdts.pop(0)
+	resultPDT = {'result': result}
+
+	for line in pdts:
+		l = line.split(':')
+		resultPDT[l[0]] = l[1]
+
+	return resultPDT
+
