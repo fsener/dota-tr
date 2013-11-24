@@ -13,7 +13,8 @@ def donate_page(request):
 	return render(request, 'donation/donation_page.html', {'custom': custom_obfuscated, 'o':"sometext"})
 
 def donate_page_success(req):
-	payload = {'cmd':"_notify-synch", 'tx':req.GET.tx, 'at': pdt_hash}
+	getObj = dict(req.GET.iterlists())
+	payload = {'cmd':"_notify-synch", 'tx':getObj.tx, 'at': pdt_hash}
 	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr', payload)
 
 	print response
