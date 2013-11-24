@@ -21,4 +21,4 @@ def donate_page_success(req):
 
 	print response
 
-	return render(request, 'donation/donation_page_success.html', {'response': response})
+	return render(req, 'donation/donation_page_success.html', {'response': response})
