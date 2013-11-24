@@ -17,7 +17,7 @@ def donate_page_success(req):
 	print getObj
 
 	payload = {'cmd':"_notify-synch", 'tx':getObj[u'tx'], 'at': pdt_hash}
-	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr', payload)
+	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr', params=payload)
 
 	print response
 
