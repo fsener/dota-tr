@@ -31,8 +31,7 @@ def parsePDT(pdt):
 
 	for line in pdts:
 		l = line.split('=')
-		if(len(l) > 0):
-			print l
+		if(len(l) > 1):
 			resultPDT[l[0]] = l[1]
 
 	return resultPDT
