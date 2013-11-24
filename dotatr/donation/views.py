@@ -27,10 +27,12 @@ def parsePDT(pdt):
 	result = pdts.pop(0)
 
 	resultPDT = urlparse.parse_qs("&".join(pdts))
-	resultPDT['result'] = result
 
 	for key in resultPDT:
 		resultPDT[key] = resultPDT[key][0]
+
+
+	resultPDT['result'] = result
 
 	return resultPDT
 
