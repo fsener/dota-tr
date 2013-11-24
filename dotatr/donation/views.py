@@ -13,7 +13,7 @@ def donate_page(request):
 def donate_page_success(request):
 	pdt = getPDT(request)
 
-	custom = json.loads(base64.standard_b64decode(pdt.custom))
+	custom = json.loads(base64.standard_b64decode(pdt['custom'][0]))
 
 	print custom['user']
 
