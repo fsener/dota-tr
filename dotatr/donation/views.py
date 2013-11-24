@@ -14,6 +14,8 @@ def donate_page(request):
 
 def donate_page_success(req):
 	payload = {'cmd':"_notify-synch", 'tx':req.GET.tx, 'at': pdt_hash}
-	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr')
+	response = requests.get('https://www.sandbox.paypal.com/cgi-bin/webscr', payload)
+
+	print response
 
 	return render(request, 'donation/donation_page_success.html', {'response': response})
