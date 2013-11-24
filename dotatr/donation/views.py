@@ -15,7 +15,8 @@ def donate_page_success(request):
 
 	custom = json.loads(base64.standard_b64decode(pdt['custom'][0]))
 
-	print custom['user']
+	print pdt
+	print custom
 
 	return render(request, 'donation/donation_page_success.html', {'response': pdt})
 
