@@ -22,7 +22,7 @@ def donate_page_success(req):
 
 
 def parsePDT(pdt):
-	pdts = pdt.split('\n')
+	pdts = urllib.unquote(pdt).decode('utf8').split('\n')
 
 	result = pdts.pop(0)
 	resultPDT = {'result': result}
@@ -30,7 +30,7 @@ def parsePDT(pdt):
 	for line in pdts:
 		l = line.split('=')
 		if(len(l) > 1):
-			resultPDT[l[0]] = urllib.unquote(l[1]).decode('utf8')
+			resultPDT[l[0]] = l[1] 
 
 	return resultPDT
 
