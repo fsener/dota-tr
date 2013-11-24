@@ -13,11 +13,10 @@ def donate_page(request):
 def donate_page_success(request):
 	pdt = getPDT(request)
 
-	custom = json.loads(base64.standard_b64decode(pdt['custom']))
+	custom = None
 
-	game = custom['game']
-	user = custom['user']
-
+	if(pdt['result'] == "SUCCESS"):
+		custom = json.loads(base64.standard_b64decode(pdt['custom']))
 
 	return render(request, 'donation/donation_page_success.html', {'response': pdt, 'custom': custom})
 
@@ -26,9 +25,9 @@ def parsePDT(pdt):
 	pdts = pdt.split('\n')
 
 	result = pdts.pop(0)
-	resultPDT = {'result': result}
 
 	resultPDT = urlparse.parse_qs("&".join(pdts))
+	resultPDT['result'] = result
 
 	for key in resultPDT:
 		resultPDT[key] = resultPDT[key][0]
