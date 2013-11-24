@@ -29,10 +29,9 @@ def parsePDT(pdt):
 	result = pdts.pop(0)
 	resultPDT = {'result': result}
 
-	print result
-
 	for line in pdts:
 		l = line.split('=')
+		print l
 		resultPDT[l[0]] = l[1]
 
 	return resultPDT
