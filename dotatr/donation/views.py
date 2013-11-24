@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import json
 import base64
+import requests
 
 def donate_page(request):
 	custom_value = {'user':"", 'game':"dota2"} 
@@ -10,5 +11,4 @@ def donate_page(request):
 	return render(request, 'donation/donation_page.html', {'custom': custom_obfuscated, 'o':"sometext"})
 
 def donate_page_success(request):
-	#burda bilgiler gelicek
-	return render(request, 'donation/donation_page_success.html', {})
+	return render(request, 'donation/donation_page_success.html', {'tx': request.GET.tx})
