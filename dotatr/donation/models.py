@@ -1,12 +1,12 @@
 from django.db import models
 
 class DonationTarget(models.Model):
-	self.month = models.IntegerField()
-	self.target = models.IntegerField()
-	self.current = models.IntegerField()
-	self.end_date = models.DateTimeField("End Date", auto_now_add=True)
-	self.start_date = models.DateTimeField("Start Date")
-	self.active = models.BooleanField(initial=False)
+	month = models.IntegerField()
+	target = models.IntegerField()
+	current = models.IntegerField()
+	end_date = models.DateTimeField("End Date", auto_now_add=True)
+	start_date = models.DateTimeField("Start Date")
+	active = models.BooleanField(initial=False)
 
 	def __unicode__(self):
 		return self.month
