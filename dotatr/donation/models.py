@@ -12,4 +12,4 @@ class DonationTarget(models.Model):
 	self.active = models.BooleanField(initial=False)
 
 	def __unicode__(self):
-        return self.month
+		return self.month
