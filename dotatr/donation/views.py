@@ -11,7 +11,7 @@ def donate_page(request):
 	custom_obfuscated = base64.standard_b64encode(custom_json)
 
 	donationTarget = DonationTarget.objects.get(month=datetime.date.today().month, active=True)
-	print donationTarget
+	print donationTarget.target
 
 	return render(request, 'donation/donation_page.html', {'custom': custom_obfuscated, 'o':"sometext"})
 
