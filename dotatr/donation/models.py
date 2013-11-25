@@ -7,6 +7,3 @@ class DonationTarget(models.Model):
 	end_date = models.DateTimeField("End Date", auto_now_add=True)
 	start_date = models.DateTimeField("Start Date")
 	active = models.BooleanField(default=False)
-
-	def __unicode__(self):
-		return self.month
