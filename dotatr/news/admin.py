@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from news.models import Article
+from donation.models import DonationTarget
 from django.template.defaultfilters import slugify
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -15,3 +16,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Article, ArticleAdmin)
+
+class DonationTargetAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(DonationTarget, DonationTargetAdmin)

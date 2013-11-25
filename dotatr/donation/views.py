@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import json, base64, requests, urlparse
+from donation.models import DonationTarget
+import datetime
 
 pdt_hash = "9Le9iJBWqevVdfaOUAx3XT3kDHrGXUnNmzcABlkJKNqIxHKCt_xTj9uho7G"
 
@@ -7,6 +9,9 @@ def donate_page(request):
 	custom_value = {'user':"erkan", 'game':"dota2"} 
 	custom_json = json.dumps(custom_value);
 	custom_obfuscated = base64.standard_b64encode(custom_json)
+
+	donationTarget = DonationTarget.objects.get(month=datetime.date.month, active=True)
+	print donationTarget
 
 	return render(request, 'donation/donation_page.html', {'custom': custom_obfuscated, 'o':"sometext"})
 
@@ -23,14 +28,11 @@ def donate_page_success(request):
 
 def parsePDT(pdt):
 	pdts = pdt.split('\n')
-
 	result = pdts.pop(0)
-
 	resultPDT = urlparse.parse_qs("&".join(pdts))
 
 	for key in resultPDT:
 		resultPDT[key] = resultPDT[key][0]
-
 
 	resultPDT['result'] = result
 
