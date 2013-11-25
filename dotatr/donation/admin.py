@@ -1,5 +1,5 @@
 from django.contrib import admin
-from news.models import Article
+from donation.models import DonationTarget
 
 class DonationTargetAdmin(admin.ModelAdmin):
     pass
