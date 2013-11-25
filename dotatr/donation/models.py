@@ -1,8 +1,5 @@
 from django.db import models
 
-from django.contrib.auth.models import Game
-from django.contrib.auth.models import User
-
 class DonationTarget(models.Model):
 	self.month = models.IntegerField()
 	self.target = models.IntegerField()
