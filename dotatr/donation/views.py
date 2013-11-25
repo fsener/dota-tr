@@ -22,7 +22,11 @@ def donate_page_success(request):
 	if(pdt['result'] == "SUCCESS"):
 		custom = json.loads(base64.standard_b64decode(pdt['custom']))
 
-	return render(request, 'donation/donation_page_success.html', {'response': pdt, 'custom': custom})
+	donationTarget = DonationTarget.objects.get(month=datetime.date.today().month)
+	donationTarget.current += pdt.mc_gross
+	donationTarget.save()
+
+	return render(request, 'donation/donation_page_success.html', {'target': donationTarget, 'response': pdt, 'custom': custom})
 
 
 def parsePDT(pdt):
