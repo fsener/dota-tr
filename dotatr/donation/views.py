@@ -23,7 +23,7 @@ def donate_page_success(request):
 		custom = json.loads(base64.standard_b64decode(pdt['custom']))
 
 	donationTarget = DonationTarget.objects.get(month=datetime.date.today().month)
-	donationTarget.current += pdt.mc_gross
+	donationTarget.current += pdt['mc_gross']
 	donationTarget.save()
 
 	return render(request, 'donation/donation_page_success.html', {'target': donationTarget, 'response': pdt, 'custom': custom})
