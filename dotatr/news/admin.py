@@ -16,7 +16,3 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Article, ArticleAdmin)
-
-class DonationTargetAdmin(admin.ModelAdmin):
-    pass
-admin.site.register(DonationTarget, DonationTargetAdmin)
