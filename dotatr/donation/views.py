@@ -2,11 +2,12 @@ from django.shortcuts import render
 import json, base64, requests, urlparse
 from donation.models import *
 import datetime
+from django.contrib.auth.models import User
 
 pdt_hash = "9Le9iJBWqevVdfaOUAx3XT3kDHrGXUnNmzcABlkJKNqIxHKCt_xTj9uho7G"
 
 def donate_page(request):
-	custom_value = {'user':"erkan", 'game':"dota2"} 
+	custom_value = {'user':"osmanii", 'game':"dota2"} #change here with userid
 	custom_json = json.dumps(custom_value);
 	custom_obfuscated = base64.standard_b64encode(custom_json)
 
@@ -26,7 +27,8 @@ def donate_page_success(request):
 	donationTarget.current += float(pdt['mc_gross'])
 	donationTarget.save()
 
-	donation = Donation(user_id=custom['user'], amount=pdt['mc_gross'], game=custom['game'])
+	userObj = User.objects.get(username=custom['user']) #change here with id
+	donation = Donation(user_id=userObj, amount=pdt['mc_gross'], game=custom['game'])
 	donation.save()
 
 	return render(request, 'donation/donation_page_success.html', {'target': donationTarget, 'response': pdt, 'custom': custom})
