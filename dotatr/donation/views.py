@@ -26,7 +26,7 @@ def donate_page_success(request):
 	donationTarget.current += float(pdt['mc_gross'])
 	donationTarget.save()
 
-	donation = Donation(user_id=custom.user, amount=pdt['mc_gross'], game=custom.game)
+	donation = Donation(user_id=custom['user'], amount=pdt['mc_gross'], game=custom['game'])
 	donation.save()
 
 	return render(request, 'donation/donation_page_success.html', {'target': donationTarget, 'response': pdt, 'custom': custom})
