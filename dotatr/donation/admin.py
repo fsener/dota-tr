@@ -8,3 +8,7 @@ admin.site.register(DonationTarget, DonationTargetAdmin)
 class DonorLevelAdmin(admin.ModelAdmin):
     pass
 admin.site.register(DonorLevel, DonorLevelAdmin)
+
+class DonationAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Donation, DonationAdmin)
