@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import json, base64, requests, urlparse
-from donation.models import DonationTarget
+from donation.models import *
 import datetime
 
 pdt_hash = "9Le9iJBWqevVdfaOUAx3XT3kDHrGXUnNmzcABlkJKNqIxHKCt_xTj9uho7G"
@@ -25,6 +25,9 @@ def donate_page_success(request):
 	donationTarget = DonationTarget.objects.get(month=datetime.date.today().month)
 	donationTarget.current += float(pdt['mc_gross'])
 	donationTarget.save()
+
+	donation = Donation(user_id=custom.user, amount=pdt['mc_gross'], game=custom.game)
+	donation.save()
 
 	return render(request, 'donation/donation_page_success.html', {'target': donationTarget, 'response': pdt, 'custom': custom})
 
